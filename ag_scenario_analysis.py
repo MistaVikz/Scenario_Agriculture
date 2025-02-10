@@ -2,11 +2,11 @@ import pandas as pd
 from utils.validation import *
 from utils.scenario import *
 from utils.calculation import *
+from utils.io import *
 
 def main():
     # Get Data
-    df_ag = pd.read_excel('data/ag_data.xlsx',sheet_name='Data')
-    df_scenario = pd.read_excel('data/ag_data.xlsx', sheet_name='Scenario Input')
+    df_ag, df_scenario, df_fert = load_data()
 
     # Validate Data
     check_data(df_ag,'Data')
@@ -19,10 +19,14 @@ def main():
     # Fertilizer Displacement
     df_ag = calc_fert_disp(df_ag)
     
-    print(df_ag.head())
-    print(df_ag.info())
-    print(df_scenario.head())
-    print(df_scenario.info())
+    #print(df_ag.head())
+    #print(df_ag.info())
+
+    #print(df_scenario.head())
+    #print(df_scenario.info())
+
+    print(df_fert)
+    print(df_fert.info())
 
 if __name__ == '__main__':
     main()
