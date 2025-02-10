@@ -11,6 +11,8 @@ def main():
     # Validate Data
     check_data(df_ag,'Data')
     check_data(df_scenario,'Scenario')
+    check_data(df_fert,'Fert')
+    valid_fert(df_fert)
 
     # Get and validate scenario.
     scenario_name, max_year, n2o_present, production, fap, npv, epp = get_scenario(df_scenario,0)
