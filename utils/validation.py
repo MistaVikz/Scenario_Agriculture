@@ -1,20 +1,24 @@
 import pandas as pd
+from pandas.api.types import is_numeric_dtype
 
-def check_data(data,whichdf='Data'):
+def valid_data(data,whichdf='Data'):
     if(whichdf == 'Data'):
         data_cols = {'Case Number', 'Product Made', 'Baseline', 'Feedstock', 'Product Displaced', 'Standard',  'Waste Diversion TPA', 'Soil Sequestration TPA', 'Soil N2O TPA'}
     elif(whichdf == 'Scenario'):
         data_cols = {'Scenario Name', 'Number of Years', 'N2O Present', 'Production (tonnes/year)', 'Fee Allowance Portion', 'NPV', 'Emissions Permit Price'}
-    else:
+    elif(whichdf == 'Fert'):
         data_cols = {'N','P','K','S','C','Ratio to AS','Ratio to MAP','Ratio to DAP','Ratio to AN','Ratio to Urea', 'Ratio to UAN'}
+    else:
+        data_cols = {'Waste Diversion', 'Location','Gold','Verra'}
 
     # Check Required Columns
     if(data_cols.issubset(data.columns) == False):
         raise ValueError(f'Invalid Columns. {data_cols} are required.')
     
     # Check for NaN
-    if(data.isnull().values.any()):
-        raise ValueError('Data contains Null Values.')
+    if(whichdf != 'Discvol'):
+        if(data.isnull().values.any()):
+            raise ValueError('Data contains Null Values.')
     
 def valid_scenario(scenario_name, max_year, n2o_present, production, fap, npv, epp):
     if(len(scenario_name) == 0):
@@ -40,3 +44,6 @@ def valid_fert(fert):
     if (fert.shape[1] != df_numeric.shape[1]):
         raise ValueError('Values in the Fertilizer Displacement Table must all be numeric.')
     
+def valid_discvol(discvol):
+    if(is_numeric_dtype(discvol['Gold']) != True or is_numeric_dtype(discvol['Verra']) != True):
+        raise ValueError('The Gold/Verra Discounts to Volume rates must all be numeric.')

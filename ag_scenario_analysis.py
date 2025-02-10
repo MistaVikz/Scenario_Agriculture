@@ -6,13 +6,16 @@ from utils.io import *
 
 def main():
     # Get Data
-    df_ag, df_scenario, df_fert = load_data()
+    df_ag, df_scenario, df_fert, df_discvol = load_data()
 
     # Validate Data
-    check_data(df_ag,'Data')
-    check_data(df_scenario,'Scenario')
-    check_data(df_fert,'Fert')
+    valid_data(df_ag,'Data')
+    valid_data(df_scenario,'Scenario')
+    valid_data(df_fert,'Fert')
+    valid_data(df_discvol,'Discvol')
     valid_fert(df_fert)
+    valid_discvol(df_discvol)
+
 
     # Get and validate scenario.
     scenario_name, max_year, n2o_present, production, fap, npv, epp = get_scenario(df_scenario,0)
@@ -27,8 +30,11 @@ def main():
     #print(df_scenario.head())
     #print(df_scenario.info())
 
-    print(df_fert)
-    print(df_fert.info())
+    #print(df_fert)
+    #print(df_fert.info())
+
+    print(df_discvol)
+    print(df_discvol.info())
 
 if __name__ == '__main__':
     main()
