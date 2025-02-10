@@ -3,21 +3,19 @@ import pandas as pd
 def check_data(data,whichdf='Data'):
 
     if(whichdf == 'Data'):
-        data_cols = {'Case Number', 'Product Made', 'Baseline', 'Feedstock', 'Product Displaced', 'Standard', 'Fertilizer Displacement TPA',  'Waste Diversion TPA', 'Soil Sequestration TPA', 'Soil N2O TPA'}
+        data_cols = {'Case Number', 'Product Made', 'Baseline', 'Feedstock', 'Product Displaced', 'Standard',  'Waste Diversion TPA', 'Soil Sequestration TPA', 'Soil N2O TPA'}
     else:
-        data_cols = {'Scenario Name', 'Number of Years', 'N2O Present', 'Production (tonnes/year)', 'Fee Allowance Portion', 'NPV'}
+        data_cols = {'Scenario Name', 'Number of Years', 'N2O Present', 'Production (tonnes/year)', 'Fee Allowance Portion', 'NPV', 'Emissions Permit Price'}
     
     # Check Required Columns
     if(data_cols.issubset(data.columns) == False):
         raise ValueError(f'Invalid Columns. {data_cols} are required.')
     
     # Check for NaN
-    if(whichdf == 'Data'):
-        data = data.drop(columns=['Fertilizer Displacement TPA'])
     if(data.isnull().values.any()):
         raise ValueError('Data contains Null Values.')
     
-def valid_scenario(scenario_name, max_year, n2o_present, production, fap, npv):
+def valid_scenario(scenario_name, max_year, n2o_present, production, fap, npv, epp):
     if(len(scenario_name) == 0):
         raise ValueError('Scenario Name required.')
     if(max_year < 1 or max_year > 10):
@@ -30,3 +28,5 @@ def valid_scenario(scenario_name, max_year, n2o_present, production, fap, npv):
         raise ValueError('Fee Allowance Portion must be between 0 and 1.')
     if(npv < 0 or npv > 1):
         raise ValueError('NPV must be between 0 and 1.')
+    if(epp < 0):
+        raise ValueError('Emissions Permit Price must be a positive value.')

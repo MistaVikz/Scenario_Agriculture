@@ -8,4 +8,5 @@ def get_scenario(scenario, row):
         production = scenario['Production (tonnes/year)'].iloc[row]
         fap = scenario['Fee Allowance Portion'].iloc[row]
         npv = scenario['NPV'].iloc[row]
-    return scenario_name, max_year, n2o_present, production, fap, npv
+        epp = scenario['Emissions Permit Price'].iloc[row]
+    return scenario_name, max_year, n2o_present, production, fap, npv, epp
