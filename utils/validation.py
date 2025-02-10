@@ -17,3 +17,16 @@ def check_data(data,whichdf='Data'):
     if(data.isnull().values.any()):
         raise ValueError('Data contains Null Values.')
     
+def valid_scenario(scenario_name, max_year, n2o_present, production, fap, npv):
+    if(len(scenario_name) == 0):
+        raise ValueError('Scenario Name required.')
+    if(max_year < 1 or max_year > 10):
+        raise ValueError('Number of Years must be between 1 and 10.')
+    if(n2o_present.lower() != "yes" and n2o_present.lower() != 'no'):
+        raise ValueError('N2O Present must be either Yes or No.')
+    if(production <= 0):
+        raise ValueError('Production must be >= 0.')
+    if(fap < 0 or fap > 1):
+        raise ValueError('Fee Allowance Portion must be between 0 and 1.')
+    if(npv < 0 or npv > 1):
+        raise ValueError('NPV must be between 0 and 1.')

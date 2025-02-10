@@ -11,8 +11,11 @@ def main():
     check_data(df_ag,'Data')
     check_data(df_scenario,'Scenario')
 
+    # Get and validate scenario.
     scenario_name, max_year, n2o_present, production, fap, npv = get_scenario(df_scenario,0)
-
+    valid_scenario(scenario_name,max_year,n2o_present,production,fap,npv)
+    
+    
     #print(df_ag.head())
     #print(df_ag.info())
     #print(df_scenario.head())
