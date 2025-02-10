@@ -1,7 +1,6 @@
 import pandas as pd
 from utils.validation import *
 from utils.scenario import *
-from utils.calculation import *
 from utils.io import *
 
 def main():
@@ -15,7 +14,6 @@ def main():
     valid_data(df_discvol,'Discvol')
     valid_fert(df_fert)
     valid_discvol(df_discvol)
-
 
     # Get and validate scenario.
     scenario_name, max_year, n2o_present, production, fap, npv, epp = get_scenario(df_scenario,0)

@@ -10,3 +10,7 @@ def get_scenario(scenario, row):
         npv = scenario['NPV'].iloc[row]
         epp = scenario['Emissions Permit Price'].iloc[row]
     return scenario_name, max_year, n2o_present, production, fap, npv, epp
+
+def calc_fert_disp(data):
+    
+    return data
