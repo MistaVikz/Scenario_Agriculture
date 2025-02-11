@@ -16,7 +16,7 @@ def get_scenario(scenario, row):
         epp = scenario['Emissions Permit Price'].iloc[row]
     return scenario_name, max_year, n2o_present, production, fap, npv, epp
 
-def get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant):
+def get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant): # Combine with emissions_short IF all calculations are not needed.
     # Calculate Fertilizer Displacement Values
     emission_factor = EMISSIONS_FACTORS[p_disp][p_made]
     fert_disp_factor = df_nutriant.loc[p_made,p_disp]
@@ -48,3 +48,11 @@ def get_emissions_short(p_made, p_disp, production, fap, epp, df_nutriant):
     fert_disp = get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant)
     return fert_disp[6]
 
+def get_discount(feedstock, baseline, standard, df_discvol):
+    if(feedstock != 'Land Use'):
+        feedstock = feedstock.capitalize()    
+    baseline = baseline.capitalize()
+    standard = standard.capitalize()
+
+    return  (1 - df_discvol.loc[(feedstock,baseline),standard])    
+    

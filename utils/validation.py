@@ -8,7 +8,7 @@ def valid_data(data,whichdf='Data'):
     elif(whichdf == 'Nutriant'):
         data_cols = {'N','P','K','S','C','AS','MAP','DAP','AN','U', 'UN'}
     elif(whichdf == 'Discvol'):
-        data_cols = {'Waste Diversion', 'Location','Gold','Verra'}
+        data_cols = {'Gold','Verra'}
     elif(whichdf == 'Pricing'):
         data_cols = {'Waste', 'Land Use', 'N2O (industrial)', 'Total', 'Total Volume', 'Gold Average', 'Verra Average', 'Offset Discrount', 'Transaction Cost'}
     else:
