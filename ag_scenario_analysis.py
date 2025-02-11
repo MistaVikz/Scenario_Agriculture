@@ -12,7 +12,7 @@ def main():
     valid_data(df_scenario,'Scenario')
     valid_data(df_nutriant,'Nutriant')
     valid_data(df_discvol,'Discvol')
-    # valid_numeric(df_nutriant)        NEED NEW VALIDATION FUNCTION
+    valid_nutriant(df_nutriant)
     valid_numeric(df_pricing)
     valid_discvol(df_discvol)
 
@@ -20,12 +20,11 @@ def main():
     scenario_name, max_year, n2o_present, production, fap, npv, epp = get_scenario(df_scenario,0)
     valid_scenario(scenario_name,max_year,n2o_present,production,fap,npv,epp)
     
-    # Test
-    get_fert_disp('5','AS', production, fap, epp, df_nutriant, df_pricing)
-
+    # Calculate Fertilizer Displacement For 100000 TPA Production
+    df_ag['Fertilizer Displacement TPA']=df_ag.apply(lambda x : get_emissions_short(x['Product Made'], x['Product Displaced'], production, fap, epp, df_nutriant) , axis=1)
     
-    #print(df_ag.head())
-    #print(df_ag.info())
+    print(df_ag.head())
+    print(df_ag.info())
 
     #print(df_scenario.head())
     #print(df_scenario.info())

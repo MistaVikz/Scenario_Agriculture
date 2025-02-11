@@ -9,6 +9,7 @@ def load_data():
     pricing = pd.read_excel('data/ag_data.xlsx', sheet_name='Pricing Table')
 
     # Format Data
+    ag['Product Made'] = ag['Product Made'].astype('str')
     scenario['Emissions Permit Price'] = scenario['Emissions Permit Price'].astype('float64')
     nutriant['Product Made'] = nutriant['Product Made'].astype('str')
     nutriant.set_index('Product Made', inplace=True)

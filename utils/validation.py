@@ -3,7 +3,7 @@ from pandas.api.types import is_numeric_dtype
 
 def valid_data(data,whichdf='Data'):
     if(whichdf == 'Data'):
-        data_cols = {'Case Number', 'Product Made', 'Baseline', 'Feedstock', 'Product Displaced', 'Standard',  'Waste Diversion TPA', 'Soil Sequestration TPA', 'Soil N2O TPA'}
+        data_cols = {'Product Made', 'Baseline', 'Feedstock', 'Product Displaced', 'Standard',  'Waste Diversion TPA', 'Soil Sequestration TPA', 'Soil N2O TPA'}
     elif(whichdf == 'Scenario'):
         data_cols = {'Scenario Name', 'Number of Years', 'N2O Present', 'Production (tonnes/year)', 'Fee Allowance Portion', 'NPV', 'Emissions Permit Price'}
     elif(whichdf == 'Nutriant'):
@@ -51,3 +51,7 @@ def valid_numeric(data):
 def valid_discvol(discvol):
     if(is_numeric_dtype(discvol['Gold']) != True or is_numeric_dtype(discvol['Verra']) != True):
         raise ValueError('The Gold/Verra Discounts to Volume rates must all be numeric.')
+
+def valid_nutriant(nutriant):
+    if(is_numeric_dtype(nutriant['N']) != True or is_numeric_dtype(nutriant['P']) != True or is_numeric_dtype(nutriant['K']) != True or is_numeric_dtype(nutriant['S']) != True or is_numeric_dtype(nutriant['C']) != True or is_numeric_dtype(nutriant['AS']) != True or is_numeric_dtype(nutriant['MAP']) != True or is_numeric_dtype(nutriant['DAP']) != True or is_numeric_dtype(nutriant['AN']) != True or is_numeric_dtype(nutriant['U']) != True or is_numeric_dtype(nutriant['UN']) != True):
+        raise ValueError('The nutriant Table values must all be numeric.')
