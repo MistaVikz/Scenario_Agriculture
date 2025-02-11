@@ -5,14 +5,15 @@ from utils.io import *
 
 def main():
     # Get Data
-    df_ag, df_scenario, df_fert, df_discvol = load_data()
+    df_ag, df_scenario, df_fert, df_discvol, df_pricing = load_data()
 
     # Validate Data
     valid_data(df_ag,'Data')
     valid_data(df_scenario,'Scenario')
     valid_data(df_fert,'Fert')
     valid_data(df_discvol,'Discvol')
-    valid_fert(df_fert)
+    valid_numeric(df_fert)
+    valid_numeric(df_pricing)
     valid_discvol(df_discvol)
 
     # Get and validate scenario.
@@ -31,8 +32,11 @@ def main():
     #print(df_fert)
     #print(df_fert.info())
 
-    print(df_discvol)
-    print(df_discvol.info())
+    #print(df_discvol)
+    #print(df_discvol.info())
+
+    print(df_pricing)
+    print(df_pricing.info())
 
 if __name__ == '__main__':
     main()

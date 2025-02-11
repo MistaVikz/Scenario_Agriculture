@@ -8,8 +8,12 @@ def valid_data(data,whichdf='Data'):
         data_cols = {'Scenario Name', 'Number of Years', 'N2O Present', 'Production (tonnes/year)', 'Fee Allowance Portion', 'NPV', 'Emissions Permit Price'}
     elif(whichdf == 'Fert'):
         data_cols = {'N','P','K','S','C','Ratio to AS','Ratio to MAP','Ratio to DAP','Ratio to AN','Ratio to Urea', 'Ratio to UAN'}
-    else:
+    elif(whichdf == 'Discvol'):
         data_cols = {'Waste Diversion', 'Location','Gold','Verra'}
+    elif(whichdf == 'Pricing'):
+        data_cols = {'Waste', 'Land Use', 'N2O (industrial)', 'Total', 'Total Volume', 'Gold Average', 'Verra Average', 'Offset Discrount', 'Transaction Cost'}
+    else:
+        raise ValueError('Invalid DataFrame. Must be either Data, Scenario, Fert, Discvol, or Pricing.')
 
     # Check Required Columns
     if(data_cols.issubset(data.columns) == False):
@@ -36,13 +40,13 @@ def valid_scenario(scenario_name, max_year, n2o_present, production, fap, npv, e
     if(epp < 0):
         raise ValueError('Emissions Permit Price must be a positive value.')
     
-def valid_fert(fert):
+def valid_numeric(data):
     # Check if all columns are numeric
-    df_numeric = fert.select_dtypes(include=["number"])
+    df_numeric = data.select_dtypes(include=["number"])
 
     # Verify if the DataFrame is fully numeric
-    if (fert.shape[1] != df_numeric.shape[1]):
-        raise ValueError('Values in the Fertilizer Displacement Table must all be numeric.')
+    if (data.shape[1] != df_numeric.shape[1]):
+        raise ValueError('Values in the Fertilizer Displacement and/or Pricing Table must all be numeric.')
     
 def valid_discvol(discvol):
     if(is_numeric_dtype(discvol['Gold']) != True or is_numeric_dtype(discvol['Verra']) != True):
