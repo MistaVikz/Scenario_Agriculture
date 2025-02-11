@@ -13,4 +13,5 @@ def load_data():
     scenario['Emissions Permit Price'] = scenario['Emissions Permit Price'].astype('float64')
     nutriant['Product Made'] = nutriant['Product Made'].astype('str')
     nutriant.set_index('Product Made', inplace=True)
+    
     return ag, scenario, nutriant, discvol, pricing

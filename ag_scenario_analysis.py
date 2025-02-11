@@ -1,4 +1,3 @@
-import pandas as pd
 from utils.validation import *
 from utils.scenario import *
 from utils.io import *
