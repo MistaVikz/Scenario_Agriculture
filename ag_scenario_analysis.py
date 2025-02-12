@@ -38,11 +38,17 @@ def main():
     df_ag['Soil N2O TPA (Yearly Adjusted Volumes)'] = df_ag['Soil N2O TPA'] * production / 100000
     df_ag['Total GHG TPA'] = df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] + df_ag['Waste Diversion TPA (Adjusted for Standard Volumes Discount)'] + df_ag['Soil Sequestration TPA (Adjusted for Standard Volumes Discount)'] + df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)']
     
-    print(df_ag.head())
-    print(df_ag.info())
+    # Calculate Yearly Prices
+    market_prices, standard_prices = get_market_prices(df_pricing)
 
-    #print(df_scenario.head())
-    #print(df_scenario.info())
+    print(market_prices)
+    print(standard_prices)
+
+    # print(df_ag.head())
+    # print(df_ag.info())
+
+    # print(df_scenario.head())
+    # print(df_scenario.info())
 
     #print(df_nutriant)
     #print(df_nutriant.info())
@@ -50,8 +56,8 @@ def main():
     #print(df_discvol)
     #print(df_discvol.info())
 
-    #print(df_pricing)
-    #print(df_pricing.info())
+    print(df_pricing)
+    print(df_pricing.info())
 
 if __name__ == '__main__':
     main()

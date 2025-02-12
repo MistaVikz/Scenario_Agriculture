@@ -26,8 +26,8 @@ def get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant): # Combine 
     emissions_short = net_req_cover * emission_factor
     offsets_used = emissions_short * OFFSET_RATE
     allowances_needed = emissions_short- offsets_used
-    value_of_displacement = (offsets_used * epp * (1 - OFFSET_DISCOUNT)) + (epp * allowances_needed)
-    cash_per_tonnes_short = value_of_displacement / emissions_short
+    value_of_displacement = round((offsets_used * epp * (1 - OFFSET_DISCOUNT)) + (epp * allowances_needed),2)
+    cash_per_tonnes_short = round(value_of_displacement / emissions_short,2)
 
     # Return Fertilizer Displacement Values
     fert_disp = []
@@ -54,5 +54,38 @@ def get_discount(feedstock, baseline, standard, df_discvol):
     baseline = baseline.capitalize()
     standard = standard.capitalize()
 
-    return  (1 - df_discvol.loc[(feedstock,baseline),standard])    
+    return  (1 - df_discvol.loc[(feedstock,baseline),standard]) 
+
+def get_market_prices(df_pricing):
+    # Calculate Market Prices
+    volume_average = round(df_pricing['Total'].loc[0] / df_pricing['Total Volume'].loc[0],2)
+    waste_adjustment_average = round(df_pricing['Waste'].loc[0] / volume_average,2)
+    land_use_adjustment_average = round(df_pricing['Land Use'].loc[0] / volume_average,2)
+    n2o_adjustment_average = round(df_pricing['N2O (industrial)'].loc[0] / volume_average,2)
+    
+    # Return Market Prices
+    market_prices = []
+    market_prices.append(volume_average)
+    market_prices.append(waste_adjustment_average)
+    market_prices.append(land_use_adjustment_average)
+    market_prices.append(n2o_adjustment_average)    
+
+    # Calculate Standard Prices
+    waste_gold_price = round(df_pricing['Gold Average'].loc[0] * waste_adjustment_average,2)
+    waste_verra_price = round(df_pricing['Verra Average'].loc[0] * waste_adjustment_average,2)
+    land_use_gold_price = round(df_pricing['Gold Average'].loc[0] * land_use_adjustment_average,2)
+    land_use_verra_price = round(df_pricing['Verra Average'].loc[0] * land_use_adjustment_average,2)
+    n2o_gold_price = round(df_pricing['Gold Average'].loc[0] * n2o_adjustment_average,2)
+    n2o_verra_price = round(df_pricing['Verra Average'].loc[0] * n2o_adjustment_average,2)
+    
+    # Return Standard Prices
+    standard_prices = []
+    standard_prices.append(waste_gold_price)
+    standard_prices.append(waste_verra_price)
+    standard_prices.append(land_use_gold_price)
+    standard_prices.append(land_use_verra_price)
+    standard_prices.append(n2o_gold_price)
+    standard_prices.append(n2o_verra_price)
+
+    return market_prices, standard_prices
     
