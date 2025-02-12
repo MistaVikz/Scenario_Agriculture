@@ -31,6 +31,13 @@ def main():
     else:
         df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)'] = 0
     
+    # Calculate Yearly Volumes Adjusted for Production Volumes
+    df_ag['Fertilizer Displacement TPA (Yearly Adjusted Volumes)'] = df_ag['Fertilizer Displacement TPA'] * production / 100000
+    df_ag['Waste Diversion TPA (Yearly Adjusted Volumes)'] = df_ag['Waste Diversion TPA'] * production / 100000
+    df_ag['Soil Sequestration TPA (Yearly Adjusted Volumes)'] = df_ag['Soil Sequestration TPA'] * production / 100000
+    df_ag['Soil N2O TPA (Yearly Adjusted Volumes)'] = df_ag['Soil N2O TPA'] * production / 100000
+    df_ag['Total GHG TPA'] = df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] + df_ag['Waste Diversion TPA (Adjusted for Standard Volumes Discount)'] + df_ag['Soil Sequestration TPA (Adjusted for Standard Volumes Discount)'] + df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)']
+    
     print(df_ag.head())
     print(df_ag.info())
 
