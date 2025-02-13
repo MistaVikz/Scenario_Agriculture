@@ -4,6 +4,7 @@ EMISSIONS_FACTORS = {'AS': {'5': 0.33, '10': 0.33, '15': 0.33, '20': 0.33},
                        'UN': {'5': 0.57, '10': 0.57, '15': 0.57, '20': 0.57}} 
 OFFSET_RATE = 0.08
 OFFSET_DISCOUNT = 0.2
+TRANSACTION_COST = 1.00
     
 def get_scenario(scenario, row):
     if row >= 0:
@@ -56,6 +57,10 @@ def get_discount(feedstock, baseline, standard, df_discvol):
 
     return  (1 - df_discvol.loc[(feedstock,baseline),standard]) 
 
+def get_cash_per_tonnes_short(p_made, p_disp, production, fap, epp, df_nutriant):
+    fert_disp = get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant)
+    return fert_disp[10]
+
 def get_market_prices(df_pricing):
     # Calculate Market Prices
     volume_average = round(df_pricing['Total'].loc[0] / df_pricing['Total Volume'].loc[0],2)
@@ -89,3 +94,19 @@ def get_market_prices(df_pricing):
 
     return market_prices, standard_prices
     
+def get_pricing(pdisp, standard, standard_prices):
+    if(pdisp == 'Waste'):
+        if(standard == 'Gold'):
+            return standard_prices[0]
+        else:
+            return standard_prices[1]
+    elif(pdisp == 'Land Use'):
+        if(standard == 'Gold'):
+            return standard_prices[2]
+        else:
+            return standard_prices[3]
+    else:
+        if(standard == 'Gold'):
+            return standard_prices[4]
+        else:
+            return standard_prices[5]

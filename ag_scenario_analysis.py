@@ -40,12 +40,19 @@ def main():
     
     # Calculate Yearly Prices
     market_prices, standard_prices = get_market_prices(df_pricing)
+    cash_per_tonnes_short = get_cash_per_tonnes_short('5', 'AS', production, fap, epp, df_nutriant)
 
-    print(market_prices)
-    print(standard_prices)
+    df_ag['Fertilizer Displacement TPA Revenue ($/Year)'] = round(df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] * cash_per_tonnes_short,2)
+    df_ag['Waste Diversion TPA Revenue ($/Year)'] = round(df_ag['Waste Diversion TPA (Adjusted for Standard Volumes Discount)'] * df_ag.apply(lambda x : get_pricing('Waste',x['Standard'], standard_prices) , axis=1),2)
+    df_ag['Soil Sequestration TPA Revenue ($/Year)'] = round(df_ag['Soil Sequestration TPA (Adjusted for Standard Volumes Discount)'] * df_ag.apply(lambda x : get_pricing('Land Use',x['Standard'], standard_prices) , axis=1),2)
+    df_ag['Soil N2O TPA Revenue ($/Year)'] = round(df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)'] * df_ag.apply(lambda x : get_pricing('N2O (industrial)',x['Standard'], standard_prices) , axis=1),2)
 
-    # print(df_ag.head())
-    # print(df_ag.info())
+    df_ag['Transaction Cost ($/Year)'] = round(production * TRANSACTION_COST,2)
+    df_ag['NPV from GHG ($/Year)'] = round(df_ag['Fertilizer Displacement TPA Revenue ($/Year)'] + df_ag['Waste Diversion TPA Revenue ($/Year)'] + df_ag['Soil Sequestration TPA Revenue ($/Year)'] + df_ag['Soil N2O TPA Revenue ($/Year)'] - df_ag['Transaction Cost ($/Year)'],2)
+    df_ag['NPV from GHG per Tonne ($/Year)'] = round(df_ag['NPV from GHG ($/Year)'] / production,2)
+    
+    print(df_ag.head())
+    print(df_ag.info())
 
     # print(df_scenario.head())
     # print(df_scenario.info())
@@ -56,8 +63,8 @@ def main():
     #print(df_discvol)
     #print(df_discvol.info())
 
-    print(df_pricing)
-    print(df_pricing.info())
+    #print(df_pricing)
+    #print(df_pricing.info())
 
 if __name__ == '__main__':
     main()
