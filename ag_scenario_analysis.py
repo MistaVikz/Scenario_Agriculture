@@ -39,7 +39,7 @@ def main():
     df_ag['Total GHG TPA'] = df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] + df_ag['Waste Diversion TPA (Adjusted for Standard Volumes Discount)'] + df_ag['Soil Sequestration TPA (Adjusted for Standard Volumes Discount)'] + df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)']
     
     # Calculate Yearly Prices
-    market_prices, standard_prices = get_market_prices(df_pricing)
+    standard_prices = get_standard_prices(df_pricing)
     cash_per_tonnes_short = get_cash_per_tonnes_short('5', 'AS', production, fap, epp, df_nutriant)
 
     df_ag['Fertilizer Displacement TPA Revenue ($/Year)'] = round(df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] * cash_per_tonnes_short,2)

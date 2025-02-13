@@ -61,20 +61,13 @@ def get_cash_per_tonnes_short(p_made, p_disp, production, fap, epp, df_nutriant)
     fert_disp = get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant)
     return fert_disp[10]
 
-def get_market_prices(df_pricing):
+def get_standard_prices(df_pricing):
     # Calculate Market Prices
     volume_average = round(df_pricing['Total'].loc[0] / df_pricing['Total Volume'].loc[0],2)
     waste_adjustment_average = round(df_pricing['Waste'].loc[0] / volume_average,2)
     land_use_adjustment_average = round(df_pricing['Land Use'].loc[0] / volume_average,2)
     n2o_adjustment_average = round(df_pricing['N2O (industrial)'].loc[0] / volume_average,2)
     
-    # Return Market Prices
-    market_prices = []
-    market_prices.append(volume_average)
-    market_prices.append(waste_adjustment_average)
-    market_prices.append(land_use_adjustment_average)
-    market_prices.append(n2o_adjustment_average)    
-
     # Calculate Standard Prices
     waste_gold_price = round(df_pricing['Gold Average'].loc[0] * waste_adjustment_average,2)
     waste_verra_price = round(df_pricing['Verra Average'].loc[0] * waste_adjustment_average,2)
@@ -92,7 +85,7 @@ def get_market_prices(df_pricing):
     standard_prices.append(n2o_gold_price)
     standard_prices.append(n2o_verra_price)
 
-    return market_prices, standard_prices
+    return standard_prices
     
 def get_pricing(pdisp, standard, standard_prices):
     if(pdisp == 'Waste'):
