@@ -1,3 +1,5 @@
+import pandas as pd
+
 EMISSIONS_FACTORS = {'AS': {'5': 0.33, '10': 0.33, '15': 0.33, '20': 0.33}, 
                        'AN': {'5': 0.91, '10': 0.91, '15': 0.91, '20': 0.91}, 
                        'U': {'5': 0.45, '10': 0.45, '15': 0.45, '20': 0.45}, 
@@ -103,3 +105,4 @@ def get_pricing(pdisp, standard, standard_prices):
             return standard_prices[4]
         else:
             return standard_prices[5]
+
