@@ -55,15 +55,15 @@ def main():
 
     trans_cost_columns = ['Year', 'Transaction Cost ($/Year) (MAX VALUE)', 'Transaction Cost ($/Year) (MIN VALUE)', 'Transaction Cost ($/Year) (MEDIAN VALUE)',
                         'Transaction Cost ($/Year) (MAX INDEX)', 'Transaction Cost ($/Year) (MIN INDEX)', 'Transaction Cost ($/Year) (MEDIAN INDEX)']
-    df_trans_cost_columns = pd.DataFrame(columns=trans_cost_columns)
+    df_trans_cost = pd.DataFrame(columns=trans_cost_columns)
 
     npv_columns = ['Year', 'NPV from GHG ($/Year) (MAX VALUE)', 'NPV from GHG ($/Year) (MIN VALUE)', 'NPV from GHG ($/Year) (MEDIAN VALUE)',
                         'NPV from GHG ($/Year) (MAX INDEX)', 'NPV from GHG ($/Year) (MIN INDEX)', 'NPV from GHG ($/Year) (MEDIAN INDEX)']
-    df_npv_columns = pd.DataFrame(columns=npv_columns)
+    df_npv = pd.DataFrame(columns=npv_columns)
 
     npv_tonnes_columns = ['Year', 'NPV from GHG per Tonne ($/Year) (MAX VALUE)', 'NPV from GHG per Tonne ($/Year) (MIN VALUE)', 'NPV from GHG per Tonne ($/Year) (MEDIAN VALUE)',
                         'NPV from GHG per Tonne ($/Year) (MAX INDEX)', 'NPV from GHG per Tonne ($/Year) (MIN INDEX)', 'NPV from GHG per Tonne ($/Year) (MEDIAN INDEX)']
-    df_npv_tonnes_columns = pd.DataFrame(columns=npv_tonnes_columns)
+    df_npv_tonnes = pd.DataFrame(columns=npv_tonnes_columns)
 
     # Get and validate scenario.
     # TO DO: Scenario input variables need to be changable through max 10 years. Then loop through all years. Do after output.
@@ -112,13 +112,11 @@ def main():
     df_waste_rev = add_stats_to_df(df_waste_rev, df_ag['Waste Diversion TPA Revenue ($/Year)'], year)
     df_soil_rev = add_stats_to_df(df_soil_rev, df_ag['Soil Sequestration TPA Revenue ($/Year)'], year)
     df_n2o_rev = add_stats_to_df(df_n2o_rev, df_ag['Soil N2O TPA Revenue ($/Year)'], year)
-    df_npv_columns = add_stats_to_df(df_npv_columns, df_ag['NPV from GHG ($/Year)'], year)
-    df_npv_tonnes_columns = add_stats_to_df(df_npv_tonnes_columns, df_ag['NPV from GHG per Tonne ($/Year)'], year)
-
-    print(df_soil_vol)
-
-#    print(df_ag.head())
-#    print(df_ag.info())
+    df_npv = add_stats_to_df(df_npv, df_ag['NPV from GHG ($/Year)'], year)
+    df_npv_tonnes = add_stats_to_df(df_npv_tonnes, df_ag['NPV from GHG per Tonne ($/Year)'], year)
+    
+    # print(df_ag.head())
+    # print(df_ag.info())
 
     # print(df_scenario.head())
     # print(df_scenario.info())
