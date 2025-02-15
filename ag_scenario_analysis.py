@@ -115,6 +115,11 @@ def main():
     df_npv = add_stats_to_df(df_npv, df_ag['NPV from GHG ($/Year)'], year)
     df_npv_tonnes = add_stats_to_df(df_npv_tonnes, df_ag['NPV from GHG per Tonne ($/Year)'], year)
     
+    # Print Results NEED FUNCTION TO AUTOMATE ALL RESULTS
+    print_results(df_ag,df_fert_vol['Fertilizer Displacement TPA (MAX INDEX)'].iloc[0], "MAX")
+    print_results(df_ag,df_fert_vol['Fertilizer Displacement TPA (MIN INDEX)'].iloc[0], "MIN")
+    print_results(df_ag,df_fert_vol['Fertilizer Displacement TPA (MEDIAN INDEX)'].iloc[0], "MEDIAN")
+
     # print(df_ag.head())
     # print(df_ag.info())
 

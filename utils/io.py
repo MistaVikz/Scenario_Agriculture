@@ -16,3 +16,11 @@ def load_data():
     discvol.set_index(['Waste Diversion','Location'], inplace=True)
     
     return ag, scenario, nutriant, discvol, pricing
+
+def print_results(df, stat, stat_type):
+      
+    feedstock = df['Feedstock'].iloc[stat]
+    product_displaced = df['Product Displaced'].iloc[stat]
+    standard = df['Standard'].iloc[stat]
+
+    print(f" {stat_type}\tFeedstock: {feedstock}\t Product Displaced: {product_displaced}\t Standard: {standard}")

@@ -20,4 +20,9 @@ def get_statistics(df_ag, year):
 def add_stats_to_df(dest, source, year):
     dest.loc[-1] = get_statistics(source, year)
     dest.index = dest.index + 1
+
+    index_cols = dest.filter(regex="INDEX")
+    for index_col in index_cols:
+        dest[index_col] = dest[index_col].astype(int)
+
     return dest
