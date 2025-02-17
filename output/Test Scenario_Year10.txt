@@ -1,0 +1,70 @@
+Volume Scenarios
+----------------------------------------------------------------
+Fertilizer Displacement TPA 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: AN	 Standard: Gold
+MIN	Feedstock: wood	 Product Displaced: U	 Standard: Gold
+MEDIAN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+
+
+Waste Diversion TPA 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+MIN	Feedstock: Ag	 Product Displaced: AS	 Standard: Gold
+MEDIAN	Feedstock: Ag	 Product Displaced: AS	 Standard: Gold
+
+
+Soil Sequestration TPA 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: U	 Standard: Verra
+MIN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+MEDIAN	Feedstock: wood	 Product Displaced: UN	 Standard: Gold
+
+
+Soil N2O TPA 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+MIN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+MEDIAN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+
+
+Total GHG TPA 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: U	 Standard: Verra
+MIN	Feedstock: Ag	 Product Displaced: AS	 Standard: Gold
+MEDIAN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+
+
+Revenue Scenarios
+----------------------------------------------------------------
+Fertilizer Displacement TPA Revenue ($/Year) 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: AN	 Standard: Gold
+MIN	Feedstock: wood	 Product Displaced: U	 Standard: Gold
+MEDIAN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+
+
+Waste Diversion TPA Revenue ($/Year) 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+MIN	Feedstock: Ag	 Product Displaced: AS	 Standard: Verra
+MEDIAN	Feedstock: Ag	 Product Displaced: AS	 Standard: Gold
+
+
+Soil Sequestration TPA Revenue ($/Year) 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: U	 Standard: Verra
+MIN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+MEDIAN	Feedstock: wood	 Product Displaced: U	 Standard: Verra
+
+
+Soil N2O TPA Revenue ($/Year) 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+MIN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+MEDIAN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+
+
+NPV from GHG ($/Year) 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: AN	 Standard: Gold
+MIN	Feedstock: Ag	 Product Displaced: U	 Standard: Gold
+MEDIAN	Feedstock: wood	 Product Displaced: AN	 Standard: Gold
+
+
+NPV from GHG per Tonne ($/Year) 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: AN	 Standard: Gold
+MIN	Feedstock: Ag	 Product Displaced: U	 Standard: Gold
+MEDIAN	Feedstock: Ag	 Product Displaced: AS	 Standard: Gold
+
+

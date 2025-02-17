@@ -17,10 +17,18 @@ def load_data():
     
     return ag, scenario, nutriant, discvol, pricing
 
-def print_results(df, stat, stat_type):
-      
-    feedstock = df['Feedstock'].iloc[stat]
-    product_displaced = df['Product Displaced'].iloc[stat]
-    standard = df['Standard'].iloc[stat]
+def print_results(df, stat, stat_cols, year, f):
 
-    print(f" {stat_type}\tFeedstock: {feedstock}\t Product Displaced: {product_displaced}\t Standard: {standard}")
+    scenario = {'MAX' :stat[stat_cols[4]].iloc[0], 'MIN': stat[stat_cols[5]].iloc[0], 'MEDIAN': stat[stat_cols[6]].iloc[0]}
+    name = stat.columns.values[1].replace('(MAX VALUE)','')
+
+    print(f"{name}\tYear: {year}",file=f)
+    for scen, row in scenario.items():
+        feedstock = df['Feedstock'].iloc[row]
+        product_displaced = df['Product Displaced'].iloc[row]
+        standard = df['Standard'].iloc[row]
+        print(f"{scen}\tFeedstock: {feedstock}\t Product Displaced: {product_displaced}\t Standard: {standard}",file=f)
+
+    print('\n',file=f)
+    
+    

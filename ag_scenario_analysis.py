@@ -115,10 +115,26 @@ def main():
     df_npv = add_stats_to_df(df_npv, df_ag['NPV from GHG ($/Year)'], year)
     df_npv_tonnes = add_stats_to_df(df_npv_tonnes, df_ag['NPV from GHG per Tonne ($/Year)'], year)
     
-    # Print Results NEED FUNCTION TO AUTOMATE ALL RESULTS
-    print_results(df_ag,df_fert_vol['Fertilizer Displacement TPA (MAX INDEX)'].iloc[0], "MAX")
-    print_results(df_ag,df_fert_vol['Fertilizer Displacement TPA (MIN INDEX)'].iloc[0], "MIN")
-    print_results(df_ag,df_fert_vol['Fertilizer Displacement TPA (MEDIAN INDEX)'].iloc[0], "MEDIAN")
+    # Print Results to File
+    with open(f'output/{scenario_name}_Year{year}.txt', 'w') as f:
+        print('Volume Scenarios', file=f)
+        print('----------------------------------------------------------------', file=f)
+        print_results(df_ag,df_fert_vol, fert_vol_columns, year, f)
+        print_results(df_ag,df_waste_vol, waste_vol_columns, year, f)
+        print_results(df_ag,df_soil_vol, soil_vol_columns, year, f)
+        print_results(df_ag,df_n2o_vol, n2o_vol_columns, year, f)
+        print_results(df_ag,df_ghg_vol, ghg_vol_columns, year, f)
+        
+        print('Revenue Scenarios', file=f)
+        print('----------------------------------------------------------------', file=f)
+        print_results(df_ag,df_fert_rev, fert_rev_columns, year, f)
+        print_results(df_ag,df_waste_rev, waste_rev_columns, year, f)
+        print_results(df_ag,df_soil_rev, soil_rev_columns, year, f)
+        print_results(df_ag,df_n2o_rev, n2o_rev_columns, year, f)
+        #print_results(df_ag,df_trans_cost, trans_cost_columns, year,f)
+        print_results(df_ag,df_npv, npv_columns, year, f)
+        print_results(df_ag,df_npv_tonnes, npv_tonnes_columns, year, f)
+        
 
     # print(df_ag.head())
     # print(df_ag.info())
