@@ -56,6 +56,12 @@ MIN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
 MEDIAN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
 
 
+Transaction Cost ($/Year) 	Year: 10
+MAX	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+MIN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+MEDIAN	Feedstock: wood	 Product Displaced: AS	 Standard: Gold
+
+
 NPV from GHG ($/Year) 	Year: 10
 MAX	Feedstock: wood	 Product Displaced: AN	 Standard: Gold
 MIN	Feedstock: Ag	 Product Displaced: U	 Standard: Gold

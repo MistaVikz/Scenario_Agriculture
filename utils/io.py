@@ -18,10 +18,11 @@ def load_data():
     return ag, scenario, nutriant, discvol, pricing
 
 def print_results(df, stat, stat_cols, year, f):
-
+    # Get name and year
     scenario = {'MAX' :stat[stat_cols[4]].iloc[0], 'MIN': stat[stat_cols[5]].iloc[0], 'MEDIAN': stat[stat_cols[6]].iloc[0]}
     name = stat.columns.values[1].replace('(MAX VALUE)','')
 
+    # Print MIN, MAX, MEDIAN
     print(f"{name}\tYear: {year}",file=f)
     for scen, row in scenario.items():
         feedstock = df['Feedstock'].iloc[row]

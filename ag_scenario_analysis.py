@@ -112,10 +112,11 @@ def main():
     df_waste_rev = add_stats_to_df(df_waste_rev, df_ag['Waste Diversion TPA Revenue ($/Year)'], year)
     df_soil_rev = add_stats_to_df(df_soil_rev, df_ag['Soil Sequestration TPA Revenue ($/Year)'], year)
     df_n2o_rev = add_stats_to_df(df_n2o_rev, df_ag['Soil N2O TPA Revenue ($/Year)'], year)
+    df_trans_cost = add_stats_to_df(df_trans_cost, df_ag['Transaction Cost ($/Year)'], year)
     df_npv = add_stats_to_df(df_npv, df_ag['NPV from GHG ($/Year)'], year)
     df_npv_tonnes = add_stats_to_df(df_npv_tonnes, df_ag['NPV from GHG per Tonne ($/Year)'], year)
     
-    # Print Results to File
+    # Print Yearly Results to File (Change to JSON if time permits)
     with open(f'output/{scenario_name}_Year{year}.txt', 'w') as f:
         print('Volume Scenarios', file=f)
         print('----------------------------------------------------------------', file=f)
@@ -131,10 +132,12 @@ def main():
         print_results(df_ag,df_waste_rev, waste_rev_columns, year, f)
         print_results(df_ag,df_soil_rev, soil_rev_columns, year, f)
         print_results(df_ag,df_n2o_rev, n2o_rev_columns, year, f)
-        #print_results(df_ag,df_trans_cost, trans_cost_columns, year,f)
+        print_results(df_ag,df_trans_cost, trans_cost_columns, year,f)
         print_results(df_ag,df_npv, npv_columns, year, f)
         print_results(df_ag,df_npv_tonnes, npv_tonnes_columns, year, f)
         
+
+    # NEED dictionaries for yearly GHG volumes and NPV for graphs. Append each year/value to dictionary. Then graph.
 
     # print(df_ag.head())
     # print(df_ag.info())
