@@ -20,47 +20,36 @@ def main():
     fert_vol_columns = ['Year', 'Fertilizer Displacement TPA (MAX VALUE)', 'Fertilizer Displacement TPA (MIN VALUE)', 'Fertilizer Displacement TPA (MEDIAN VALUE)', 
                      'Fertilizer Displacement TPA (MAX INDEX)', 'Fertilizer Displacement TPA (MIN INDEX)', 'Fertilizer Displacement TPA (MEDIAN INDEX)']                     
     df_fert_vol = pd.DataFrame(columns=fert_vol_columns)
-
     waste_vol_columns =  ['Year', 'Waste Diversion TPA (MAX VALUE)', 'Waste Diversion TPA (MIN VALUE)', 'Waste Diversion TPA (MEDIAN VALUE)',
                         'Waste Diversion TPA (MAX INDEX)', 'Waste Diversion TPA (MIN INDEX)', 'Waste Diversion TPA (MEDIAN INDEX)']
     df_waste_vol = pd.DataFrame(columns=waste_vol_columns)
-
     soil_vol_columns =  ['Year', 'Soil Sequestration TPA (MAX VALUE)', 'Soil Sequestration TPA (MIN VALUE)', 'Soil Sequestration TPA (MEDIAN VALUE)',
                         'Soil Sequestration TPA (MAX INDEX)', 'Soil Sequestration TPA (MIN INDEX)', 'Soil Sequestration TPA (MEDIAN INDEX)']
     df_soil_vol = pd.DataFrame(columns=soil_vol_columns)
-
     n2o_vol_columns = ['Year', 'Soil N2O TPA (MAX VALUE)', 'Soil N2O TPA (MIN VALUE)', 'Soil N2O TPA (MEDIAN VALUE)',
                         'Soil N2O TPA (MAX INDEX)', 'Soil N2O TPA (MIN INDEX)', 'Soil N2O TPA (MEDIAN INDEX)']
     df_n2o_vol = pd.DataFrame(columns=n2o_vol_columns)
-
     ghg_vol_columns = ['Year', 'Total GHG TPA (MAX VALUE)', 'Total GHG TPA (MIN VALUE)', 'Total GHG TPA (MEDIAN VALUE)',
                         'Total GHG TPA (MAX INDEX)', 'Total GHG TPA (MIN INDEX)', 'Total GHG TPA (MEDIAN INDEX)']
     df_ghg_vol = pd.DataFrame(columns=ghg_vol_columns)
-
     fert_rev_columns = ['Year', 'Fertilizer Displacement TPA Revenue ($/Year) (MAX VALUE)', 'Fertilizer Displacement TPA Revenue ($/Year) (MIN VALUE)', 'Fertilizer Displacement TPA Revenue ($/Year) (MEDIAN VALUE)',
                         'Fertilizer Displacement TPA Revenue ($/Year) (MAX INDEX)', 'Fertilizer Displacement TPA Revenue ($/Year) (MIN INDEX)', 'Fertilizer Displacement TPA Revenue ($/Year) (MEDIAN INDEX)']
     df_fert_rev = pd.DataFrame(columns=fert_rev_columns)
-
     waste_rev_columns = ['Year', 'Waste Diversion TPA Revenue ($/Year) (MAX VALUE)', 'Waste Diversion TPA Revenue ($/Year) (MIN VALUE)', 'Waste Diversion TPA Revenue ($/Year) (MEDIAN VALUE)',
                         'Waste Diversion TPA Revenue ($/Year) (MAX INDEX)', 'Waste Diversion TPA Revenue ($/Year) (MIN INDEX)', 'Waste Diversion TPA Revenue ($/Year) (MEDIAN INDEX)']
     df_waste_rev = pd.DataFrame(columns=waste_rev_columns)
-
     soil_rev_columns = ['Year', 'Soil Sequestration TPA Revenue ($/Year) (MAX VALUE)', 'Soil Sequestration TPA Revenue ($/Year) (MIN VALUE)', 'Soil Sequestration TPA Revenue ($/Year) (MEDIAN VALUE)',
                         'Soil Sequestration TPA Revenue ($/Year) (MAX INDEX)', 'Soil Sequestration TPA Revenue ($/Year) (MIN INDEX)', 'Soil Sequestration TPA Revenue ($/Year) (MEDIAN INDEX)']
     df_soil_rev = pd.DataFrame(columns=soil_rev_columns)
-
     n2o_rev_columns = ['Year', 'Soil N2O TPA Revenue ($/Year) (MAX VALUE)', 'Soil N2O TPA Revenue ($/Year) (MIN VALUE)', 'Soil N2O TPA Revenue ($/Year) (MEDIAN VALUE)',
                         'Soil N2O TPA Revenue ($/Year) (MAX INDEX)', 'Soil N2O TPA Revenue ($/Year) (MIN INDEX)', 'Soil N2O TPA Revenue ($/Year) (MEDIAN INDEX)']
     df_n2o_rev = pd.DataFrame(columns=n2o_rev_columns)
-
     trans_cost_columns = ['Year', 'Transaction Cost ($/Year) (MAX VALUE)', 'Transaction Cost ($/Year) (MIN VALUE)', 'Transaction Cost ($/Year) (MEDIAN VALUE)',
                         'Transaction Cost ($/Year) (MAX INDEX)', 'Transaction Cost ($/Year) (MIN INDEX)', 'Transaction Cost ($/Year) (MEDIAN INDEX)']
     df_trans_cost = pd.DataFrame(columns=trans_cost_columns)
-
     npv_columns = ['Year', 'NPV from GHG ($/Year) (MAX VALUE)', 'NPV from GHG ($/Year) (MIN VALUE)', 'NPV from GHG ($/Year) (MEDIAN VALUE)',
                         'NPV from GHG ($/Year) (MAX INDEX)', 'NPV from GHG ($/Year) (MIN INDEX)', 'NPV from GHG ($/Year) (MEDIAN INDEX)']
     df_npv = pd.DataFrame(columns=npv_columns)
-
     npv_tonnes_columns = ['Year', 'NPV from GHG per Tonne ($/Year) (MAX VALUE)', 'NPV from GHG per Tonne ($/Year) (MIN VALUE)', 'NPV from GHG per Tonne ($/Year) (MEDIAN VALUE)',
                         'NPV from GHG per Tonne ($/Year) (MAX INDEX)', 'NPV from GHG per Tonne ($/Year) (MIN INDEX)', 'NPV from GHG per Tonne ($/Year) (MEDIAN INDEX)']
     df_npv_tonnes = pd.DataFrame(columns=npv_tonnes_columns)
@@ -68,6 +57,9 @@ def main():
     # Get and validate scenario.
     # TO DO: Scenario input variables need to be changable through max 10 years. Then loop through all years. Do after output.
     scenario_name, year, n2o_present, production, fap, npv, epp = get_scenario(df_scenario,0)
+    
+    
+    
     valid_scenario(scenario_name,year,n2o_present,production,fap,npv,epp)
     
     # Calculate Fertilizer Displacement For 100000 TPA Production
@@ -137,7 +129,7 @@ def main():
         print_results(df_ag,df_npv_tonnes, npv_tonnes_columns, year, f)
         
 
-    # NEED dictionaries for yearly GHG volumes and NPV for graphs. Append each year/value to dictionary. Then graph.
+    # NEED dictionaries for yearly GHG volumes and NPV (both MAX/MIN/MEDIAN) for graphs. Append each year/value to dictionary.
 
     # print(df_ag.head())
     # print(df_ag.info())

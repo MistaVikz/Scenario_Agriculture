@@ -25,10 +25,17 @@ def print_results(df, stat, stat_cols, year, f):
     # Print MIN, MAX, MEDIAN
     print(f"{name}\tYear: {year}",file=f)
     for scen, row in scenario.items():
+        if(scen=='MAX'):
+            value = stat[stat_cols[1]].iloc[0]
+        elif(scen=='MIN'):
+            value = stat[stat_cols[2]].iloc[0]
+        else:
+            value = stat[stat_cols[3]].iloc[0]
+  
         feedstock = df['Feedstock'].iloc[row]
         product_displaced = df['Product Displaced'].iloc[row]
         standard = df['Standard'].iloc[row]
-        print(f"{scen}\tFeedstock: {feedstock}\t Product Displaced: {product_displaced}\t Standard: {standard}",file=f)
+        print(f"{scen}:\tFeedstock: {feedstock}\t Product Displaced: {product_displaced}\t Standard: {standard}\t Value: {value}",file=f)
 
     print('\n',file=f)
     
