@@ -55,78 +55,78 @@ def main():
     df_npv_tonnes = pd.DataFrame(columns=npv_tonnes_columns)
 
     # Get and validate scenario.
-    # TO DO: Scenario input variables need to be changable through max 10 years. Then loop through all years. Do after output.
-    scenario_name, year, n2o_present, production, fap, npv, epp = get_scenario(df_scenario,0)
+    valid_yearly_scenario(df_scenario)
+    max_year = len(df_scenario)
     
+    for year in range(0, max_year):
+        n2o_present, production, fap, npv, epp = get_scenario(df_scenario,year)
+        valid_scenario(n2o_present,production,fap,npv,epp)
     
+        # Calculate Fertilizer Displacement For 100000 TPA Production
+        df_ag['Fertilizer Displacement TPA']=df_ag.apply(lambda x : get_emissions_short(x['Product Made'], x['Product Displaced'], production, fap, epp, df_nutriant) , axis=1)
     
-    valid_scenario(scenario_name,year,n2o_present,production,fap,npv,epp)
+        # Calculate Standard Volumes Discount
+        df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] = df_ag['Fertilizer Displacement TPA']
+        df_ag['Waste Diversion TPA (Adjusted for Standard Volumes Discount)'] = df_ag['Waste Diversion TPA'] * df_ag.apply(lambda x : get_discount(x['Feedstock'], x['Baseline'], x['Standard'], df_discvol) , axis=1)
+        df_ag['Soil Sequestration TPA (Adjusted for Standard Volumes Discount)'] = df_ag['Soil Sequestration TPA'] * df_ag.apply(lambda x : get_discount('Land Use', 'All', x['Standard'], df_discvol) , axis=1)
+        if(n2o_present == 'Yes'):
+            df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)'] = df_ag['Soil N2O TPA'] * df_ag.apply(lambda x : get_discount('Land Use', 'All', x['Standard'], df_discvol) , axis=1)
+        else:
+            df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)'] = 0
     
-    # Calculate Fertilizer Displacement For 100000 TPA Production
-    df_ag['Fertilizer Displacement TPA']=df_ag.apply(lambda x : get_emissions_short(x['Product Made'], x['Product Displaced'], production, fap, epp, df_nutriant) , axis=1)
+        # Calculate Yearly Volumes Adjusted for Production Volumes
+        df_ag['Fertilizer Displacement TPA (Yearly Adjusted Volumes)'] = df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] * production / 100000
+        df_ag['Waste Diversion TPA (Yearly Adjusted Volumes)'] = df_ag['Waste Diversion TPA (Adjusted for Standard Volumes Discount)'] * production / 100000
+        df_ag['Soil Sequestration TPA (Yearly Adjusted Volumes)'] = df_ag['Soil Sequestration TPA (Adjusted for Standard Volumes Discount)'] * production / 100000
+        df_ag['Soil N2O TPA (Yearly Adjusted Volumes)'] = df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)'] * production / 100000
+        df_ag['Total GHG TPA'] = df_ag['Fertilizer Displacement TPA (Yearly Adjusted Volumes)'] + df_ag['Waste Diversion TPA (Yearly Adjusted Volumes)'] + df_ag['Soil Sequestration TPA (Yearly Adjusted Volumes)'] + df_ag['Soil N2O TPA (Yearly Adjusted Volumes)']
     
-    # Calculate Standard Volumes Discount
-    df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] = df_ag['Fertilizer Displacement TPA']
-    df_ag['Waste Diversion TPA (Adjusted for Standard Volumes Discount)'] = df_ag['Waste Diversion TPA'] * df_ag.apply(lambda x : get_discount(x['Feedstock'], x['Baseline'], x['Standard'], df_discvol) , axis=1)
-    df_ag['Soil Sequestration TPA (Adjusted for Standard Volumes Discount)'] = df_ag['Soil Sequestration TPA'] * df_ag.apply(lambda x : get_discount('Land Use', 'All', x['Standard'], df_discvol) , axis=1)
-    if(n2o_present == 'Yes'):
-        df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)'] = df_ag['Soil N2O TPA'] * df_ag.apply(lambda x : get_discount('Land Use', 'All', x['Standard'], df_discvol) , axis=1)
-    else:
-        df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)'] = 0
-    
-    # Calculate Yearly Volumes Adjusted for Production Volumes
-    df_ag['Fertilizer Displacement TPA (Yearly Adjusted Volumes)'] = df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] * production / 100000
-    df_ag['Waste Diversion TPA (Yearly Adjusted Volumes)'] = df_ag['Waste Diversion TPA (Adjusted for Standard Volumes Discount)'] * production / 100000
-    df_ag['Soil Sequestration TPA (Yearly Adjusted Volumes)'] = df_ag['Soil Sequestration TPA (Adjusted for Standard Volumes Discount)'] * production / 100000
-    df_ag['Soil N2O TPA (Yearly Adjusted Volumes)'] = df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)'] * production / 100000
-    df_ag['Total GHG TPA'] = df_ag['Fertilizer Displacement TPA (Yearly Adjusted Volumes)'] + df_ag['Waste Diversion TPA (Yearly Adjusted Volumes)'] + df_ag['Soil Sequestration TPA (Yearly Adjusted Volumes)'] + df_ag['Soil N2O TPA (Yearly Adjusted Volumes)']
-    
-    # Calculate Yearly Prices
-    standard_prices = get_standard_prices(df_pricing)
-    cash_per_tonnes_short = get_cash_per_tonnes_short('5', 'AS', production, fap, epp, df_nutriant)
+        # Calculate Yearly Prices
+        standard_prices = get_standard_prices(df_pricing)
+        cash_per_tonnes_short = get_cash_per_tonnes_short('5', 'AS', production, fap, epp, df_nutriant)
 
-    df_ag['Fertilizer Displacement TPA Revenue ($/Year)'] = round(df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] * cash_per_tonnes_short,2)
-    df_ag['Waste Diversion TPA Revenue ($/Year)'] = round(df_ag['Waste Diversion TPA (Adjusted for Standard Volumes Discount)'] * df_ag.apply(lambda x : get_pricing('Waste',x['Standard'], standard_prices) , axis=1),2)
-    df_ag['Soil Sequestration TPA Revenue ($/Year)'] = round(df_ag['Soil Sequestration TPA (Adjusted for Standard Volumes Discount)'] * df_ag.apply(lambda x : get_pricing('Land Use',x['Standard'], standard_prices) , axis=1),2)
-    df_ag['Soil N2O TPA Revenue ($/Year)'] = round(df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)'] * df_ag.apply(lambda x : get_pricing('N2O (industrial)',x['Standard'], standard_prices) , axis=1),2)
+        df_ag['Fertilizer Displacement TPA Revenue ($/Year)'] = round(df_ag['Fertilizer Displacement TPA (Adjusted for Standard Volumes Discount)'] * cash_per_tonnes_short,2)
+        df_ag['Waste Diversion TPA Revenue ($/Year)'] = round(df_ag['Waste Diversion TPA (Adjusted for Standard Volumes Discount)'] * df_ag.apply(lambda x : get_pricing('Waste',x['Standard'], standard_prices) , axis=1),2)
+        df_ag['Soil Sequestration TPA Revenue ($/Year)'] = round(df_ag['Soil Sequestration TPA (Adjusted for Standard Volumes Discount)'] * df_ag.apply(lambda x : get_pricing('Land Use',x['Standard'], standard_prices) , axis=1),2)
+        df_ag['Soil N2O TPA Revenue ($/Year)'] = round(df_ag['Soil N2O TPA (Adjusted for Standard Volumes Discount)'] * df_ag.apply(lambda x : get_pricing('N2O (industrial)',x['Standard'], standard_prices) , axis=1),2)
 
-    df_ag['Transaction Cost ($/Year)'] = round(production * TRANSACTION_COST,2)
-    df_ag['NPV from GHG ($/Year)'] = round(df_ag['Fertilizer Displacement TPA Revenue ($/Year)'] + df_ag['Waste Diversion TPA Revenue ($/Year)'] + df_ag['Soil Sequestration TPA Revenue ($/Year)'] + df_ag['Soil N2O TPA Revenue ($/Year)'] - df_ag['Transaction Cost ($/Year)'],2)
-    df_ag['NPV from GHG per Tonne ($/Year)'] = round(df_ag['NPV from GHG ($/Year)'] / production,2)
+        df_ag['Transaction Cost ($/Year)'] = round(production * TRANSACTION_COST,2)
+        df_ag['NPV from GHG ($/Year)'] = round(df_ag['Fertilizer Displacement TPA Revenue ($/Year)'] + df_ag['Waste Diversion TPA Revenue ($/Year)'] + df_ag['Soil Sequestration TPA Revenue ($/Year)'] + df_ag['Soil N2O TPA Revenue ($/Year)'] - df_ag['Transaction Cost ($/Year)'],2)
+        df_ag['NPV from GHG per Tonne ($/Year)'] = round(df_ag['NPV from GHG ($/Year)'] / production,2)
     
-    # Get Statistics
-    df_fert_vol = add_stats_to_df(df_fert_vol, df_ag['Fertilizer Displacement TPA (Yearly Adjusted Volumes)'], year)
-    df_waste_vol = add_stats_to_df(df_waste_vol, df_ag['Waste Diversion TPA (Yearly Adjusted Volumes)'], year)
-    df_soil_vol = add_stats_to_df(df_soil_vol, df_ag['Soil Sequestration TPA (Yearly Adjusted Volumes)'], year)
-    df_n2o_vol = add_stats_to_df(df_n2o_vol, df_ag['Soil N2O TPA (Yearly Adjusted Volumes)'], year)
-    df_ghg_vol = add_stats_to_df(df_ghg_vol, df_ag['Total GHG TPA'], year)
-    df_fert_rev = add_stats_to_df(df_fert_rev, df_ag['Fertilizer Displacement TPA Revenue ($/Year)'], year)
-    df_waste_rev = add_stats_to_df(df_waste_rev, df_ag['Waste Diversion TPA Revenue ($/Year)'], year)
-    df_soil_rev = add_stats_to_df(df_soil_rev, df_ag['Soil Sequestration TPA Revenue ($/Year)'], year)
-    df_n2o_rev = add_stats_to_df(df_n2o_rev, df_ag['Soil N2O TPA Revenue ($/Year)'], year)
-    df_trans_cost = add_stats_to_df(df_trans_cost, df_ag['Transaction Cost ($/Year)'], year)
-    df_npv = add_stats_to_df(df_npv, df_ag['NPV from GHG ($/Year)'], year)
-    df_npv_tonnes = add_stats_to_df(df_npv_tonnes, df_ag['NPV from GHG per Tonne ($/Year)'], year)
+        # Get Statistics
+        df_fert_vol = add_stats_to_df(df_fert_vol, df_ag['Fertilizer Displacement TPA (Yearly Adjusted Volumes)'], year)
+        df_waste_vol = add_stats_to_df(df_waste_vol, df_ag['Waste Diversion TPA (Yearly Adjusted Volumes)'], year)
+        df_soil_vol = add_stats_to_df(df_soil_vol, df_ag['Soil Sequestration TPA (Yearly Adjusted Volumes)'], year)
+        df_n2o_vol = add_stats_to_df(df_n2o_vol, df_ag['Soil N2O TPA (Yearly Adjusted Volumes)'], year)
+        df_ghg_vol = add_stats_to_df(df_ghg_vol, df_ag['Total GHG TPA'], year)
+        df_fert_rev = add_stats_to_df(df_fert_rev, df_ag['Fertilizer Displacement TPA Revenue ($/Year)'], year)
+        df_waste_rev = add_stats_to_df(df_waste_rev, df_ag['Waste Diversion TPA Revenue ($/Year)'], year)
+        df_soil_rev = add_stats_to_df(df_soil_rev, df_ag['Soil Sequestration TPA Revenue ($/Year)'], year)
+        df_n2o_rev = add_stats_to_df(df_n2o_rev, df_ag['Soil N2O TPA Revenue ($/Year)'], year)
+        df_trans_cost = add_stats_to_df(df_trans_cost, df_ag['Transaction Cost ($/Year)'], year)
+        df_npv = add_stats_to_df(df_npv, df_ag['NPV from GHG ($/Year)'], year)
+        df_npv_tonnes = add_stats_to_df(df_npv_tonnes, df_ag['NPV from GHG per Tonne ($/Year)'], year)
     
-    # Print Yearly Results to File (Change to JSON if time permits)
-    with open(f'output/{scenario_name}_Year{year}.txt', 'w') as f:
-        print('Volume Scenarios', file=f)
-        print('----------------------------------------------------------------', file=f)
-        print_results(df_ag,df_fert_vol, fert_vol_columns, year, f)
-        print_results(df_ag,df_waste_vol, waste_vol_columns, year, f)
-        print_results(df_ag,df_soil_vol, soil_vol_columns, year, f)
-        print_results(df_ag,df_n2o_vol, n2o_vol_columns, year, f)
-        print_results(df_ag,df_ghg_vol, ghg_vol_columns, year, f)
+        # Print Yearly Results to File (Change to JSON if time permits)
+        with open(f'output/Scenario_Results_Year{year+1}.txt', 'w') as f:
+            print('Volume Scenarios', file=f)
+            print('----------------------------------------------------------------', file=f)
+            print_results(df_ag,df_fert_vol, fert_vol_columns, year, f)
+            print_results(df_ag,df_waste_vol, waste_vol_columns, year, f)
+            print_results(df_ag,df_soil_vol, soil_vol_columns, year, f)
+            print_results(df_ag,df_n2o_vol, n2o_vol_columns, year, f)
+            print_results(df_ag,df_ghg_vol, ghg_vol_columns, year, f)
         
-        print('Revenue Scenarios', file=f)
-        print('----------------------------------------------------------------', file=f)
-        print_results(df_ag,df_fert_rev, fert_rev_columns, year, f)
-        print_results(df_ag,df_waste_rev, waste_rev_columns, year, f)
-        print_results(df_ag,df_soil_rev, soil_rev_columns, year, f)
-        print_results(df_ag,df_n2o_rev, n2o_rev_columns, year, f)
-        print_results(df_ag,df_trans_cost, trans_cost_columns, year,f)
-        print_results(df_ag,df_npv, npv_columns, year, f)
-        print_results(df_ag,df_npv_tonnes, npv_tonnes_columns, year, f)
+            print('Revenue Scenarios', file=f)
+            print('----------------------------------------------------------------', file=f)
+            print_results(df_ag,df_fert_rev, fert_rev_columns, year, f)
+            print_results(df_ag,df_waste_rev, waste_rev_columns, year, f)
+            print_results(df_ag,df_soil_rev, soil_rev_columns, year, f)
+            print_results(df_ag,df_n2o_rev, n2o_rev_columns, year, f)
+            print_results(df_ag,df_trans_cost, trans_cost_columns, year,f)
+            print_results(df_ag,df_npv, npv_columns, year, f)
+            print_results(df_ag,df_npv_tonnes, npv_tonnes_columns, year, f)
         
 
     # NEED dictionaries for yearly GHG volumes and NPV (both MAX/MIN/MEDIAN) for graphs. Append each year/value to dictionary.

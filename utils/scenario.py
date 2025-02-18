@@ -10,14 +10,12 @@ TRANSACTION_COST = 1.00
     
 def get_scenario(scenario, row):
     if row >= 0:
-        scenario_name = scenario['Scenario Name'].iloc[row]
-        max_year = scenario['Number of Years'].iloc[row]
         n2o_present = scenario['N2O Present'].iloc[row]
         production = scenario['Production (tonnes/year)'].iloc[row]
         fap = scenario['Fee Allowance Portion'].iloc[row]
         npv = scenario['NPV'].iloc[row]
         epp = scenario['Emissions Permit Price'].iloc[row]
-    return scenario_name, max_year, n2o_present, production, fap, npv, epp
+    return n2o_present, production, fap, npv, epp
 
 def get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant): # Combine with emissions_short IF all calculations are not needed.
     # Calculate Fertilizer Displacement Values

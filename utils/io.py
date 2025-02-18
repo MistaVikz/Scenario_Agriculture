@@ -23,7 +23,7 @@ def print_results(df, stat, stat_cols, year, f):
     name = stat.columns.values[1].replace('(MAX VALUE)','')
 
     # Print MIN, MAX, MEDIAN
-    print(f"{name}\tYear: {year}",file=f)
+    print(f"{name}\tYear: {year+1}",file=f)
     for scen, row in scenario.items():
         if(scen=='MAX'):
             value = stat[stat_cols[1]].iloc[0]
