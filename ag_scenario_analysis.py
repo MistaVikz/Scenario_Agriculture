@@ -54,11 +54,14 @@ def main():
                         'NPV from GHG per Tonne ($/Year) (MAX INDEX)', 'NPV from GHG per Tonne ($/Year) (MIN INDEX)', 'NPV from GHG per Tonne ($/Year) (MEDIAN INDEX)']
     df_npv_tonnes = pd.DataFrame(columns=npv_tonnes_columns)
 
-    # Get and validate scenario.
+    # Check for scenario data and create output folder
     valid_yearly_scenario(df_scenario)
     max_year = len(df_scenario)
-    
+    output_folder = create_output_folder()
+
+    # Loop through each year in the scenario data    
     for year in range(0, max_year):
+        # Get scenario values for the year
         n2o_present, production, fap, npv, epp = get_scenario(df_scenario,year)
         valid_scenario(n2o_present,production,fap,npv,epp)
     
@@ -109,7 +112,7 @@ def main():
         df_npv_tonnes = add_stats_to_df(df_npv_tonnes, df_ag['NPV from GHG per Tonne ($/Year)'], year)
     
         # Print Yearly Results to File (Change to JSON if time permits)
-        with open(f'output/Scenario_Results_Year{year+1}.txt', 'w') as f:
+        with open(f'{output_folder}/Scenario_Results_Year{year+1}.txt', 'w') as f:
             print('Volume Scenarios', file=f)
             print('----------------------------------------------------------------', file=f)
             print_results(df_ag,df_fert_vol, fert_vol_columns, year, f)

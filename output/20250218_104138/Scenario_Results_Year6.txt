@@ -1,0 +1,76 @@
+Volume Scenarios
+----------------------------------------------------------------
+Fertilizer Displacement TPA 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: AN	 Standard: Gold	 Value: 26697.794117647056
+MIN:	Feedstock: wood	 Product Displaced: U	 Standard: Gold	 Value: 8217.391304347826
+MEDIAN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 15318.75
+
+
+Waste Diversion TPA 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 154799.0
+MIN:	Feedstock: Ag	 Product Displaced: AS	 Standard: Gold	 Value: 2595.0
+MEDIAN:	Feedstock: Ag	 Product Displaced: AS	 Standard: Gold	 Value: 32551.499999999996
+
+
+Soil Sequestration TPA 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: U	 Standard: Verra	 Value: 77438.40000000001
+MIN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 8708.5
+MEDIAN:	Feedstock: wood	 Product Displaced: UN	 Standard: Gold	 Value: 33827.75
+
+
+Soil N2O TPA 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 0.0
+MIN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 0.0
+MEDIAN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 0.0
+
+
+Total GHG TPA 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: U	 Standard: Verra	 Value: 240454.79130434786
+MIN:	Feedstock: Ag	 Product Displaced: AS	 Standard: Gold	 Value: 26978.5
+MEDIAN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 86437.22352941174
+
+
+Revenue Scenarios
+----------------------------------------------------------------
+Fertilizer Displacement TPA Revenue ($/Year) 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: AN	 Standard: Gold	 Value: 656765.74
+MIN:	Feedstock: wood	 Product Displaced: U	 Standard: Gold	 Value: 202147.83
+MEDIAN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 376841.25
+
+
+Waste Diversion TPA Revenue ($/Year) 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 726007.31
+MIN:	Feedstock: Ag	 Product Displaced: AS	 Standard: Verra	 Value: 8874.9
+MEDIAN:	Feedstock: Ag	 Product Displaced: AS	 Standard: Gold	 Value: 152666.535
+
+
+Soil Sequestration TPA Revenue ($/Year) 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: U	 Standard: Verra	 Value: 463856.02
+MIN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 71583.87
+MEDIAN:	Feedstock: wood	 Product Displaced: U	 Standard: Verra	 Value: 242441.655
+
+
+Soil N2O TPA Revenue ($/Year) 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 0.0
+MIN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 0.0
+MEDIAN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 0.0
+
+
+Transaction Cost ($/Year) 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 100000.0
+MIN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 100000.0
+MEDIAN:	Feedstock: wood	 Product Displaced: AS	 Standard: Gold	 Value: 100000.0
+
+
+NPV from GHG ($/Year) 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: AN	 Standard: Gold	 Value: 1465445.66
+MIN:	Feedstock: Ag	 Product Displaced: U	 Standard: Gold	 Value: 353348.05
+MEDIAN:	Feedstock: wood	 Product Displaced: AN	 Standard: Gold	 Value: 718072.615
+
+
+NPV from GHG per Tonne ($/Year) 	Year: 6
+MAX:	Feedstock: wood	 Product Displaced: AN	 Standard: Gold	 Value: 14.65
+MIN:	Feedstock: Ag	 Product Displaced: U	 Standard: Gold	 Value: 3.53
+MEDIAN:	Feedstock: Ag	 Product Displaced: AS	 Standard: Gold	 Value: 7.18
+
+

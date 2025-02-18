@@ -1,4 +1,6 @@
 import pandas as pd
+import datetime
+import os
 
 def load_data():
     # Load Data
@@ -38,5 +40,22 @@ def print_results(df, stat, stat_cols, year, f):
         print(f"{scen}:\tFeedstock: {feedstock}\t Product Displaced: {product_displaced}\t Standard: {standard}\t Value: {value}",file=f)
 
     print('\n',file=f)
+
+def create_output_folder():
+    # Get the current date and time
+    now = datetime.datetime.now()
+    date_time = now.strftime("%Y%m%d_%H%M%S")
+
+    # Get the current directory of the script
+    current_dir = os.path.dirname(__file__)
+
+    # Construct the path to the output directory
+    output_dir = os.path.join(current_dir, '..', 'output')
+
+    # Create a new folder with the timestamp
+    folder_name = os.path.join(output_dir, date_time)
+    os.makedirs(folder_name, exist_ok=True)
+
+    return folder_name
     
     
