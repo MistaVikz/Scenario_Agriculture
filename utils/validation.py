@@ -22,7 +22,11 @@ def valid_data(data,whichdf='Data'):
     if(whichdf != 'Discvol'):
         if(data.isnull().values.any()):
             raise ValueError('Data contains Null Values.')
-    
+
+def valid_yearly_scenario(scenario):
+    if(len(scenario) == 0 or len(scenario) > 10):
+        raise ValueError('Please enter scenario input for between 1 and 10 years.')
+
 def valid_scenario(n2o_present, production, fap, npv, epp):
     if(n2o_present.lower() != "yes" and n2o_present.lower() != 'no'):
         raise ValueError('N2O Present must be either Yes or No.')
@@ -51,6 +55,3 @@ def valid_nutriant(nutriant):
     if(is_numeric_dtype(nutriant['N']) != True or is_numeric_dtype(nutriant['P']) != True or is_numeric_dtype(nutriant['K']) != True or is_numeric_dtype(nutriant['S']) != True or is_numeric_dtype(nutriant['C']) != True or is_numeric_dtype(nutriant['AS']) != True or is_numeric_dtype(nutriant['MAP']) != True or is_numeric_dtype(nutriant['DAP']) != True or is_numeric_dtype(nutriant['AN']) != True or is_numeric_dtype(nutriant['U']) != True or is_numeric_dtype(nutriant['UN']) != True):
         raise ValueError('The nutriant Table values must all be numeric.')
     
-def valid_yearly_scenario(scenario):
-    if(len(scenario) == 0 or len(scenario) > 10):
-        raise ValueError('Please enter scenario input for between 1 and 10 years.')

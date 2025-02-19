@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy_financial as npf
 import datetime
 import os
 
@@ -58,4 +59,9 @@ def create_output_folder():
 
     return folder_name
     
-    
+def print_npv_results(npv_rate, values, yearly_production, output_folder, scen, f):
+    npv = round(npf.npv(npv_rate, values),2)
+    npv_fac_per_prod = round(npv / sum(yearly_production),2)
+    net_pot_per_prod = round(sum(values) / sum(yearly_production),2)
+
+    print(f"{scen}:\tNPV: {npv}\tNPV By Facility Size: {npv_fac_per_prod}\tNet Potential By Total Production: {net_pot_per_prod}",file=f)        
