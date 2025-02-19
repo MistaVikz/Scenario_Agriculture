@@ -5,6 +5,8 @@ from utils.statistics import *
 
 NPV_RATE = 0.1
 
+# NEED TO ADD command args for NPV and Feedstock/Product/Standard filters
+
 def main():
     # Get Data
     df_ag, df_scenario, df_nutriant, df_discvol, df_pricing = load_data()
@@ -61,13 +63,17 @@ def main():
     max_year = len(df_scenario)
     output_folder = create_output_folder()
     yearly_produciton = []
+    years = []
     
     # Loop through each year in the scenario data    
     for year in range(0, max_year):
         # Get scenario values for the year
         n2o_present, production, fap, epp = get_scenario(df_scenario,year)
-        yearly_produciton.append(production)
         valid_scenario(n2o_present, production, fap, epp)
+
+        # Store Values for Plotting
+        yearly_produciton.append(production)
+        years.append(year+1)
     
         # Calculate Fertilizer Displacement For 100000 TPA Production
         df_ag['Fertilizer Displacement TPA']=df_ag.apply(lambda x : get_emissions_short(x['Product Made'], x['Product Displaced'], production, fap, epp, df_nutriant) , axis=1)
@@ -115,7 +121,7 @@ def main():
         df_npv = add_stats_to_df(df_npv, df_ag['NPV from GHG ($/Year)'], year)
         df_npv_tonnes = add_stats_to_df(df_npv_tonnes, df_ag['NPV from GHG per Tonne ($/Year)'], year)
     
-        # Print Yearly Results to File (Change to JSON if time permits)
+        # Print Yearly Results to File
         with open(f'{output_folder}/Scenario_Results_Year{year+1}.txt', 'w') as f:
             print('Volume Scenarios', file=f)
             print('----------------------------------------------------------------', file=f)
@@ -146,27 +152,15 @@ def main():
         print_npv_results(NPV_RATE, min_npv, yearly_produciton, output_folder, 'MIN', f)
         print_npv_results(NPV_RATE, median_npv, yearly_produciton, output_folder, 'MEDIAN', f)
     
+    # Plot Yearly GHG and NPV Scenarios
     max_total_ghg = df_ghg_vol['Total GHG TPA (MAX VALUE)'].to_list()
     min_total_ghg = df_ghg_vol['Total GHG TPA (MIN VALUE)'].to_list()
     median_total_ghg = df_ghg_vol['Total GHG TPA (MEDIAN VALUE)'].to_list()
 
+    plot_graphs(years, max_npv, min_npv, median_npv, output_folder, 'NPV')
+    plot_graphs(years, max_total_ghg, min_total_ghg, median_total_ghg, output_folder, 'GHG')
 
-    # NEED dictionaries/lists for yearly GHG volumes and NPV (both MAX/MIN/MEDIAN) for graphs. Append each year/value to dictionary.
-
-    # print(df_ag.head())
-    # print(df_ag.info())
-
-    # print(df_scenario.head())
-    # print(df_scenario.info())
-
-    #print(df_nutriant)
-    #print(df_nutriant.info())
-
-    #print(df_discvol)
-    #print(df_discvol.info())
-
-    #print(df_pricing)
-    #print(df_pricing.info())
+    print(f"Scenario Results saved to {output_folder}.")
 
 if __name__ == '__main__':
     main()
