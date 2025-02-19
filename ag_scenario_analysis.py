@@ -65,9 +65,9 @@ def main():
     # Loop through each year in the scenario data    
     for year in range(0, max_year):
         # Get scenario values for the year
-        n2o_present, production, fap, npv, epp = get_scenario(df_scenario,year)
+        n2o_present, production, fap, epp = get_scenario(df_scenario,year)
         yearly_produciton.append(production)
-        valid_scenario(n2o_present,production,fap,npv,epp)
+        valid_scenario(n2o_present, production, fap, epp)
     
         # Calculate Fertilizer Displacement For 100000 TPA Production
         df_ag['Fertilizer Displacement TPA']=df_ag.apply(lambda x : get_emissions_short(x['Product Made'], x['Product Displaced'], production, fap, epp, df_nutriant) , axis=1)
@@ -151,7 +151,6 @@ def main():
     median_total_ghg = df_ghg_vol['Total GHG TPA (MEDIAN VALUE)'].to_list()
 
 
-    # NEED to calculate the Overall NPV table in Output. REMOVE NPV from scenario input and use 10% as CONSTANT.
     # NEED dictionaries/lists for yearly GHG volumes and NPV (both MAX/MIN/MEDIAN) for graphs. Append each year/value to dictionary.
 
     # print(df_ag.head())

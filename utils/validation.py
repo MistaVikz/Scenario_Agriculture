@@ -27,15 +27,13 @@ def valid_yearly_scenario(scenario):
     if(len(scenario) == 0 or len(scenario) > 10):
         raise ValueError('Please enter scenario input for between 1 and 10 years.')
 
-def valid_scenario(n2o_present, production, fap, npv, epp):
+def valid_scenario(n2o_present, production, fap, epp):
     if(n2o_present.lower() != "yes" and n2o_present.lower() != 'no'):
         raise ValueError('N2O Present must be either Yes or No.')
     if(production <= 0):
         raise ValueError('Production must be >= 0.')
     if(fap < 0 or fap > 1):
         raise ValueError('Fee Allowance Portion must be between 0 and 1.')
-    if(npv < 0 or npv > 1):
-        raise ValueError('NPV must be between 0 and 1.')
     if(epp < 0):
         raise ValueError('Emissions Permit Price must be a positive value.')
     

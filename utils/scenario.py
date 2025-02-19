@@ -13,9 +13,8 @@ def get_scenario(scenario, row):
         n2o_present = scenario['N2O Present'].iloc[row]
         production = scenario['Production (tonnes/year)'].iloc[row]
         fap = scenario['Fee Allowance Portion'].iloc[row]
-        npv = scenario['NPV'].iloc[row]
         epp = scenario['Emissions Permit Price'].iloc[row]
-    return n2o_present, production, fap, npv, epp
+    return n2o_present, production, fap, epp
 
 def get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant): # Combine with emissions_short IF all calculations are not needed.
     # Calculate Fertilizer Displacement Values
