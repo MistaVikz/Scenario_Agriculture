@@ -22,6 +22,23 @@ def load_data():
     
     return ag, scenario, nutriant, discvol, pricing
 
+def filter_data(df, f_filter, p_filter, s_filter):
+    f_string = ""
+    if (f_filter != 'All'):
+        df = df[df['Feedstock'] == f_filter]
+        f_string += f"{f_filter}_"
+    if (p_filter != 'All'):
+        df = df[df['Product Displaced'] == p_filter]
+        f_string += f"{p_filter}_"
+    if (s_filter != 'All'):
+        df = df[df['Standard'] == s_filter]
+        f_string += f"{s_filter}_"
+
+    if(f_string == ""):
+        f_string = "NoFilter_"
+    
+    return df, f_string
+
 def print_results(df, stat, stat_cols, year, f):
     # Get name and year
     scenario = {'MAX' :stat[stat_cols[4]].iloc[0], 'MIN': stat[stat_cols[5]].iloc[0], 'MEDIAN': stat[stat_cols[6]].iloc[0]}
@@ -44,10 +61,12 @@ def print_results(df, stat, stat_cols, year, f):
 
     print('\n',file=f)
 
-def create_output_folder():
+def create_output_folder(f_string):
     # Get the current date and time
     now = datetime.datetime.now()
     date_time = now.strftime("%Y%m%d_%H%M%S")
+    folder_string = f"{f_string}{date_time}"
+
 
     # Get the current directory of the script
     current_dir = os.path.dirname(__file__)
@@ -55,8 +74,8 @@ def create_output_folder():
     # Construct the path to the output directory
     output_dir = os.path.join(current_dir, '..', 'output')
 
-    # Create a new folder with the timestamp
-    folder_name = os.path.join(output_dir, date_time)
+    # Create a new folder with the timestamp and filters
+    folder_name = os.path.join(output_dir, folder_string)
     os.makedirs(folder_name, exist_ok=True)
 
     return folder_name
@@ -69,13 +88,20 @@ def print_npv_results(npv_rate, values, yearly_production, output_folder, scen, 
 
     print(f"{scen}:\tNPV: {npv}\tNPV By Facility Size: {npv_fac_per_prod}\tNet Potential By Total Production: {net_pot_per_prod}",file=f)
 
-def plot_graphs(years, max, min, median, output_folder, type):
+def plot_graphs(years, max, min, median, output_folder, type, f_string):
     # Organize yearly scenario data
     data = pd.DataFrame({'year': years,
                         'MAX': max,
                         'MIN': min,
                         'MEDIAN' : median})
     
+    # Format filters for plot titles.
+    if(f_string == "NoFilter_"):
+        f_title = "All Data"
+    else:
+        f_title = f_string[:-1]
+        f_title = str.replace(f_title,"_","/")
+
     # Plot Scenario Graph
     sns.set_theme(style="darkgrid")
     plt.figure(figsize=(10,5))
@@ -87,9 +113,9 @@ def plot_graphs(years, max, min, median, output_folder, type):
     plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0)
     if(type == 'GHG'):
         plt.ylabel('GHG Tonnes')
-        plt.title('GHG Tonnes per Year')
+        plt.title(f'GHG Tonnes per Year ({f_title})')
     elif(type == 'NPV'):
         plt.ylabel('Net Potential $')
-        plt.title('Net Potential $ per Year')
+        plt.title(f'Net Potential $ per Year ({f_title})')
     
-    plt.savefig(f"{output_folder}/{type}_Plot.png", bbox_inches='tight')
+    plt.savefig(f"{output_folder}/{f_string}_{type}_Plot.png", bbox_inches='tight')

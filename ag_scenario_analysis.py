@@ -1,13 +1,10 @@
+import argparse
 from utils.validation import *
 from utils.scenario import *
 from utils.io import *
 from utils.statistics import *
 
-NPV_RATE = 0.1
-
-# NEED TO ADD command args for NPV and Feedstock/Product/Standard filters
-
-def main():
+def main(f_filter = 'All', p_filter = 'All', s_filter = 'All', npv = 0.1):
     # Get Data
     df_ag, df_scenario, df_nutriant, df_discvol, df_pricing = load_data()
 
@@ -19,6 +16,14 @@ def main():
     valid_nutriant(df_nutriant)
     valid_numeric(df_pricing)
     valid_discvol(df_discvol)
+    valid_npv(npv)
+
+    # Filter Based on Command Line arguments
+    df_ag, f_string = filter_data(df_ag, f_filter, p_filter, s_filter)
+    df_ag =df_ag.reset_index()
+
+    #Debug
+    print(df_ag.head(10))
 
     # Build empty statistics dataframes
     fert_vol_columns = ['Year', 'Fertilizer Displacement TPA (MAX VALUE)', 'Fertilizer Displacement TPA (MIN VALUE)', 'Fertilizer Displacement TPA (MEDIAN VALUE)', 
@@ -61,7 +66,7 @@ def main():
     # Check for scenario data and prepare output
     valid_yearly_scenario(df_scenario)
     max_year = len(df_scenario)
-    output_folder = create_output_folder()
+    output_folder = create_output_folder(f_string)
     yearly_produciton = []
     years = []
     
@@ -122,7 +127,7 @@ def main():
         df_npv_tonnes = add_stats_to_df(df_npv_tonnes, df_ag['NPV from GHG per Tonne ($/Year)'], year)
     
         # Print Yearly Results to File
-        with open(f'{output_folder}/Scenario_Results_Year{year+1}.txt', 'w') as f:
+        with open(f'{output_folder}/{f_string}_Results_Year{year+1}.txt', 'w') as f:
             print('Volume Scenarios', file=f)
             print('----------------------------------------------------------------', file=f)
             print_results(df_ag,df_fert_vol, fert_vol_columns, year, f)
@@ -145,22 +150,29 @@ def main():
     max_npv = df_npv['NPV from GHG ($/Year) (MAX VALUE)'].to_list()
     min_npv = df_npv['NPV from GHG ($/Year) (MIN VALUE)'].to_list()
     median_npv = df_npv['NPV from GHG ($/Year) (MEDIAN VALUE)'].to_list()    
-    with open(f'{output_folder}/Overall_NPV_Results.txt', 'w') as f:
-        print(f'Overall NPV Results (rate = {NPV_RATE})', file=f)
+    with open(f'{output_folder}/{f_string}_NPV_Results.txt', 'w') as f:
+        print(f'Overall NPV Results (rate = {npv})', file=f)
         print('----------------------------------------------------------------', file=f)
-        print_npv_results(NPV_RATE, max_npv, yearly_produciton, output_folder, 'MAX', f)
-        print_npv_results(NPV_RATE, min_npv, yearly_produciton, output_folder, 'MIN', f)
-        print_npv_results(NPV_RATE, median_npv, yearly_produciton, output_folder, 'MEDIAN', f)
+        print_npv_results(npv, max_npv, yearly_produciton, output_folder, 'MAX', f)
+        print_npv_results(npv, min_npv, yearly_produciton, output_folder, 'MIN', f)
+        print_npv_results(npv, median_npv, yearly_produciton, output_folder, 'MEDIAN', f)
     
     # Plot Yearly GHG and NPV Scenarios
     max_total_ghg = df_ghg_vol['Total GHG TPA (MAX VALUE)'].to_list()
     min_total_ghg = df_ghg_vol['Total GHG TPA (MIN VALUE)'].to_list()
     median_total_ghg = df_ghg_vol['Total GHG TPA (MEDIAN VALUE)'].to_list()
 
-    plot_graphs(years, max_npv, min_npv, median_npv, output_folder, 'NPV')
-    plot_graphs(years, max_total_ghg, min_total_ghg, median_total_ghg, output_folder, 'GHG')
+    plot_graphs(years, max_npv, min_npv, median_npv, output_folder, 'NPV', f_string)
+    plot_graphs(years, max_total_ghg, min_total_ghg, median_total_ghg, output_folder, 'GHG', f_string)
 
     print(f"Scenario Results saved to {output_folder}.")
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--feedstock', type=str, choices = ['wood','Ag'], default='All', help='Feedstock filter: ("wood", "Ag")')
+    parser.add_argument('-p', '--product', type=str, choices = ['AS','AN','U','UN'], default='All', help='Product Made Filter: ("AS", "AN", "U", "UN")')
+    parser.add_argument('-s', '--standard', type=str, choices = ['Gold','Verra'], default='All', help='Standard filter: ("Gold", "Verra")')
+    parser.add_argument('-n', '--npv', type=float, default=0.1, help='NPV rate (0 <= NPV <= 1)')
+    args = parser.parse_args()
+    main(f_filter=args.feedstock, p_filter=args.product, s_filter=args.standard, npv = args.npv)
+    

@@ -23,6 +23,10 @@ def valid_data(data,whichdf='Data'):
         if(data.isnull().values.any()):
             raise ValueError('Data contains Null Values.')
 
+def valid_npv(npv):
+    if(npv < 0 or npv > 1):
+        raise ValueError('NPV must be between 0 and 1.')
+
 def valid_yearly_scenario(scenario):
     if(len(scenario) == 0 or len(scenario) > 10):
         raise ValueError('Please enter scenario input for between 1 and 10 years.')
