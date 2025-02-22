@@ -22,9 +22,6 @@ def main(f_filter = 'All', p_filter = 'All', s_filter = 'All', npv = 0.1):
     df_ag, f_string = filter_data(df_ag, f_filter, p_filter, s_filter)
     df_ag =df_ag.reset_index()
 
-    #Debug
-    print(df_ag.head(10))
-
     # Build empty statistics dataframes
     fert_vol_columns = ['Year', 'Fertilizer Displacement TPA (MAX VALUE)', 'Fertilizer Displacement TPA (MIN VALUE)', 'Fertilizer Displacement TPA (MEDIAN VALUE)', 
                      'Fertilizer Displacement TPA (MAX INDEX)', 'Fertilizer Displacement TPA (MIN INDEX)', 'Fertilizer Displacement TPA (MEDIAN INDEX)']                     
