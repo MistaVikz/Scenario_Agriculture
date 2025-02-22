@@ -6,6 +6,17 @@ import datetime
 import os
 
 def load_data():
+    """
+    Load data from Excel sheets and format it.
+
+    Returns:
+        tuple: A tuple containing the following DataFrames:
+            - ag (pd.DataFrame): DataFrame containing agricultural data.
+            - scenario (pd.DataFrame): DataFrame containing scenario input data.
+            - nutriant (pd.DataFrame): DataFrame containing nutrient table data.
+            - discvol (pd.DataFrame): DataFrame containing discounts to volume table data.
+            - pricing (pd.DataFrame): DataFrame containing pricing table data.
+    """
     # Load Data
     ag = pd.read_excel('data/ag_data.xlsx',sheet_name='Data')
     scenario = pd.read_excel('data/ag_data.xlsx', sheet_name='Scenario Input')
@@ -23,6 +34,18 @@ def load_data():
     return ag, scenario, nutriant, discvol, pricing
 
 def filter_data(df, f_filter, p_filter, s_filter):
+    """
+    Filter the DataFrame based on provided filters.
+
+    Args:
+        df (pd.DataFrame): The DataFrame to filter.
+        f_filter (str): The feedstock filter.
+        p_filter (str): The product displaced filter.
+        s_filter (str): The standard filter.
+
+    Returns:
+        tuple: A tuple containing the filtered DataFrame and the filter string.
+    """
     f_string = ""
     if (f_filter != 'All'):
         df = df[df['Feedstock'] == f_filter]
@@ -40,6 +63,16 @@ def filter_data(df, f_filter, p_filter, s_filter):
     return df, f_string
 
 def print_results(df, stat, stat_cols, year, f):
+    """
+    Print the results of the statistics to a file.
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the data.
+        stat (pd.DataFrame): The DataFrame containing the statistics.
+        stat_cols (list): The list of statistic columns.
+        year (int): The year associated with the statistics.
+        f (file object): The file object to print the results to.
+    """
     # Get name and year
     scenario = {'MAX' :stat[stat_cols[4]].iloc[0], 'MIN': stat[stat_cols[5]].iloc[0], 'MEDIAN': stat[stat_cols[6]].iloc[0]}
     name = stat.columns.values[1].replace('(MAX VALUE)','')
@@ -62,7 +95,16 @@ def print_results(df, stat, stat_cols, year, f):
     print('\n',file=f)
 
 def create_output_folder(f_string):
-    # Get the current date and time
+    """
+    Create an output folder with a timestamp and filters.
+
+    Args:
+        f_string (str): The filter string to include in the folder name.
+
+    Returns:
+        str: The path to the created output folder.
+    """
+    # Get the current date and time and filters
     now = datetime.datetime.now()
     date_time = now.strftime("%Y%m%d_%H%M%S")
     folder_string = f"{f_string}{date_time}"
@@ -81,6 +123,17 @@ def create_output_folder(f_string):
     return folder_name
     
 def print_npv_results(npv_rate, values, yearly_production, output_folder, scen, f):
+    """
+    Print the NPV results to a file.
+
+    Args:
+        npv_rate (float): The NPV rate.
+        values (list): The list of values.
+        yearly_production (list): The list of yearly production values.
+        output_folder (str): The path to the output folder.
+        scen (str): The scenario name.
+        f (file object): The file object to print the results to.
+    """
     # Calculate NPV Results
     npv = round(npf.npv(npv_rate, values),2)
     npv_fac_per_prod = round(npv / sum(yearly_production),2)
@@ -89,6 +142,18 @@ def print_npv_results(npv_rate, values, yearly_production, output_folder, scen, 
     print(f"{scen}:\tNPV: {npv}\tNPV By Facility Size: {npv_fac_per_prod}\tNet Potential By Total Production: {net_pot_per_prod}",file=f)
 
 def plot_graphs(years, max, min, median, output_folder, type, f_string):
+    """
+    Plot graphs for the given data and save them to the output folder.
+
+    Args:
+        years (list): The list of years.
+        max (list): The list of max values.
+        min (list): The list of min values.
+        median (list): The list of median values.
+        output_folder (str): The path to the output folder.
+        type (str): The type of graph ('GHG' or 'NPV').
+        f_string (str): The filter string to include in the plot title and filename.
+    """
     # Organize yearly scenario data
     data = pd.DataFrame({'year': years,
                         'MAX': max,

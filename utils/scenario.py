@@ -9,6 +9,20 @@ OFFSET_DISCOUNT = 0.2
 TRANSACTION_COST = 1.00
     
 def get_scenario(scenario, row):
+    """
+    Retrieve scenario parameters from a DataFrame row.
+
+    Args:
+        scenario (pd.DataFrame): The DataFrame containing scenario data.
+        row (int): The row index to retrieve data from.
+
+    Returns:
+        tuple: A tuple containing the following scenario parameters:
+            - n2o_present (str): Indicator if N2O is present.
+            - production (float): The production value.
+            - fap (float): The fee allowance portion.
+            - epp (float): The emissions permit price.
+    """
     if row >= 0:
         n2o_present = scenario['N2O Present'].iloc[row]
         production = scenario['Production (tonnes/year)'].iloc[row]
@@ -17,6 +31,20 @@ def get_scenario(scenario, row):
     return n2o_present, production, fap, epp
 
 def get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant): # Combine with emissions_short IF all calculations are not needed.
+    """
+    Calculate fertilizer displacement values.
+
+    Args:
+        p_made (str): The product made.
+        p_disp (str): The product displaced.
+        production (float): The production value.
+        fap (float): The fee allowance portion.
+        epp (float): The emissions permit price.
+        df_nutriant (pd.DataFrame): The DataFrame containing nutrient data.
+
+    Returns:
+        list: A list containing fertilizer displacement values.
+    """
     # Calculate Fertilizer Displacement Values
     emission_factor = EMISSIONS_FACTORS[p_disp][p_made]
     fert_disp_factor = df_nutriant.loc[p_made,p_disp]
@@ -45,10 +73,36 @@ def get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant): # Combine 
     return fert_disp
 
 def get_emissions_short(p_made, p_disp, production, fap, epp, df_nutriant):
+    """
+    Calculate the emissions shortfall.
+
+    Args:
+        p_made (str): The product made.
+        p_disp (str): The product displaced.
+        production (float): The production value.
+        fap (float): The fee allowance portion.
+        epp (float): The emissions permit price.
+        df_nutriant (pd.DataFrame): The DataFrame containing nutrient data.
+
+    Returns:
+        float: The emissions shortfall.
+    """
     fert_disp = get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant)
     return fert_disp[6]
 
 def get_discount(feedstock, baseline, standard, df_discvol):
+    """
+    Calculate the discount rate for a given feedstock, baseline, and standard.
+
+    Args:
+        feedstock (str): The feedstock type.
+        baseline (str): The baseline type.
+        standard (str): The standard type.
+        df_discvol (pd.DataFrame): The DataFrame containing discount volume data.
+
+    Returns:
+        float: The discount rate.
+    """
     if(feedstock != 'Land Use'):
         feedstock = feedstock.capitalize()    
     baseline = baseline.capitalize()
@@ -57,10 +111,33 @@ def get_discount(feedstock, baseline, standard, df_discvol):
     return  (1 - df_discvol.loc[(feedstock,baseline),standard]) 
 
 def get_cash_per_tonnes_short(p_made, p_disp, production, fap, epp, df_nutriant):
+    """
+    Calculate the cash per tonnes shortfall.
+
+    Args:
+        p_made (str): The product made.
+        p_disp (str): The product displaced.
+        production (float): The production value.
+        fap (float): The fee allowance portion.
+        epp (float): The emissions permit price.
+        df_nutriant (pd.DataFrame): The DataFrame containing nutrient data.
+
+    Returns:
+        float: The cash per tonnes shortfall.
+    """
     fert_disp = get_fert_disp(p_made, p_disp, production, fap, epp, df_nutriant)
     return fert_disp[10]
 
 def get_standard_prices(df_pricing):
+    """
+    Calculate standard prices based on pricing data.
+
+    Args:
+        df_pricing (pd.DataFrame): The DataFrame containing pricing data.
+
+    Returns:
+        list: A list containing standard prices for waste, land use, and N2O.
+    """
     # Calculate Market Prices
     volume_average = round(df_pricing['Total'].loc[0] / df_pricing['Total Volume'].loc[0],2)
     waste_adjustment_average = round(df_pricing['Waste'].loc[0] / volume_average,2)
@@ -87,6 +164,17 @@ def get_standard_prices(df_pricing):
     return standard_prices
     
 def get_pricing(pdisp, standard, standard_prices):
+    """
+    Retrieve the pricing for a given product displaced and standard.
+
+    Args:
+        pdisp (str): The product displaced.
+        standard (str): The standard type.
+        standard_prices (list): The list of standard prices.
+
+    Returns:
+        float: The pricing value.
+    """
     if(pdisp == 'Waste'):
         if(standard == 'Gold'):
             return standard_prices[0]
